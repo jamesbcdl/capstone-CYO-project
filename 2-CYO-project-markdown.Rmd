@@ -11,171 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Executive Summary
-
-**The Project** This document is a report on the examination of one year's worth of Cherwell ticket data (calendar year 2018) to gain insights into what this data is telling us about duration times, Service Level Agreement (SLA) target achievement, group performance, and if it is possible to forecast a given duration time - and alternatively, when an SLA target might be breached.
-
-**Fiindings** The data, while providing a complete year's worth of information, has certain flaws, the biggest of which is that it reflects inconcsistent recordkeeping on part of the staff (that is, some staff close out a ticket immediately, some batch their recordkeeping weeks or months after the fact). As a result, findings are preliminary (and cautionary).
-
-The data indicate that:
-
-* There are wide variations in staff performance
-* SLA targets - with some exceptions - are almost never met
-* Prioritization, particularly for service requests, is not meaningful
-* Focusing on a few selected areas could greatly improve performance
-* Until recordkeeping is more consistent, and prioritization is more scientific, it is not possible to predict ticket closure times beyond some level of averaging
-
-**Recommendations** The data suggests that the service desk management and team take the following steps:
-
-* *Focus on driving duration times down* through a combination of more consistent recordkeeping across the group and more dedicated management oversight to ensure this is happening. This will enable statistics to be far more reliable because outliers will be eliminated.
-
-* *Rethink SLAs* so that true priority 1's are acted on first. Part of this is to rethink the prioritization scheme; nearly all (99%) of the service requests are prioritized as priority 3's effectively having no prioritization at all. Instead, it becomes a large pile of equally important tickets, making it difficult for staff to differentiate between the truly important. Management may want to consider a 2-level prioritization for both incidents and service requests - for example, 1 day or 2 days for incidents, and 5 days or 10 days for service requests. This, of course, depends on whether or not the clients being supported feel these are fast enough resolution times. That may take some interviewing / surveying to confirm.
-
-* *Stress individual improvement* by making staff aware of their statistics. The wide variations in performance suggest it is possible the staff are unaware of the importance management is putting on SLA achievement and duration times. If staff were shown their performance statistics and provided with weekly updates, it is likely we would see a significant change in overall statistics. 
-
-* *Overall* there are serveral overarching recommendations:
-     + Management must be clear on the metrics they wish to achieve, communicate these to the staff, and build the necessary fields into Cherwell to gather the data to track them. For example, a more granular taxonomy for ticket classification, and the revised prioritization scheme recommended above.
-     + Adopt a weekly aging report to focus staff attention on what did not get closed within (the revised) SLA targets - and discuss why (as a team).
-     + Run the statistics produced by this code periodically - quarterly to semi-annually - to see what progress is being made toward management goals.
-
-\newpage
-
-# Background and Overview
-
-The Service Desk is seeking to improve its services by better managing
-customer tickets, particularly as they relate to SLAs (service level
-agreements). There are several interconnected problems to solve:
-
-* *Ticket Classification Accuracy* (both incidents and service requests) so
-tickets are properly prioritized and enable truly urgent items to be addressed
-first.
-
-* *Customer Expectation Transparency* so that clients have a more
-accurate window for ticket resolution. Workflow Improvement by addressing
-steps and tasks that slow the process down and lack of consistency within
-Operations. 
-
-* *Breach Forecasting* by determining what factors (alone or in
-combination) have the highest probability of causing breaches of the SLA, and
-identifying those for action. 
-
-* *Ticket Forensic Review* of tickets that breached their SLA through
-systematic examination of all  events/logs that led to the breach.
-
-The desired end state is that clients submitting tickets will receive
-immediate confirmation that their request has been received followed by a
-highly-reliable estimate when the request will be resolved. TSG staff can,
-with great confidence, assume that any tickets on the top of the queue are the
-ones most important to address. Improved classification and forecasting reduce
-SLA breaches, and the management team is able to set more precise SLA
-parameters with no degradation in accuracy. The workflow operates consistently
-among all team members, and in those rare cases when an SLA is not met, all of
-the necessary data and reports are available to identify the problems so they
-can be addressed.
-
-In looking at the desired end state:
-
-* Some elements are management activities and are already possible. These include: 
-     + Providing clients with immediate confirmation
-     + Enabling staff to address the highest priority items first 
-     + Consistent workflow among all team members
-
-* The others can be addressed - at least in part - through management steps
-supported by insights from an analysis like this one: 
-     + Improved classification and forecasting 
-     + Setting more precise SLA parameters with no degradation in accuracy 
-     + Data and reports for forensics
-
-This analysis looks at 1 full year of incident and service request data (calendar 2018) to gain insight to address these latter three elements. The analysis consideres the following questions for the data collectively and for both incidents and service requests separately:
-
-* What are the type and nature of the problems? 
-* What kinds of problems are more prevalent? 
-* What are the characteristics of those problems? 
-     + Minimum  to address 
-     + Maximum times to address 
-     + Average times to address 
-     + The standard deviation of duration times
-
-The analysis also seeks to determine if there are any discernable *patterns*
-in the data, for example:
-
-* Do some kinds of problems take longer - and why? 
-* Do some owners resolve problems more quickly than others?
-     + Which owners?
-     + Which problems in particular?
-* Can we accurately predict how long those problems will take?
-
-\newpage
-
-# Approach
-
-A spreadsheet was extracted from Cherwell covering all events (incidets and
-service requests) in calendar 2018. The data set included the following
-fields:
-
-* Incident ID	
-* Customer 
-* Display Name	
-* Created Date Time	
-* SLA Resolve By Deadline	
-* SLA_Time	
-* Closed Date Time
-* Dur_Time                    
-* Status	
-* Short Description	
-* Description	
-* Category	
-* Incident Type	
-* Call Source	
-* Cause	
-* Equipment ID	
-* Owned By	
-* Priority	
-* Requester Department
-
-The analysis then took the following steps:
-
-* Examined the shape of the data and the general characteristics
-* Determined that the data contained many outliers that skewed the data
-* Chose a better "maximum duration" value for a more normal data set
-* Broke the data down into lower graularity problem categories
-* Split the analysis to look at incidents and service requests separately
-* Generated a number of outputs for management, including:
-     + Basic descriptive statistics to be compared with SLA goals
-     + Views of the top problem generators and their characteristics
-     + Views of the problem owners and their speed and efficiency in addressing
-* Providing several views of how to predict likely problem duration
-* Providing management with a set of recommendations on how to proceed
-
-Before proceeding, it will be useful to understand a few terms as used in the analysis:
-
-* *Event* refers to any service desk incident or service request
-* An *incident* refers to an urgent event that must be addressed within 2 days
-* A *service request* refes to an event of lower urgency that can be addressed within 10 days
-* A *category* refers to a type of incident or service request, for example, a password reset, a security breach, or a request to setup and install a computer.
-* A *priority* is assigned to every event using the numbers 1 - 5. A priority 1 is the most urgent.
-* *Duration time* refers to the number of days between event creation and event closure. It measured in calendar days, excluding weekends, giving an approximation of the number of business days it took to close an event.
-* An *SLA* is a service level agreement. It is the stated commitment to the organization of when the event will be addressed. For incidents, this commitment is 2 days; for service requests, it is 10 days.
-
-\newpage
-
-# Descriptive Statistics
-
-We will start the analysis by looking at the general shape and characteristics of the data, determine how many levels down we need to go to get the necessary granularity, and then look at the descriptive statistics for those groupings.
-
-##  General Characteristics of the Data
-
-The original data set had 7130 events overall, split between 1522 incidents (21%) and 5603 service requests (79%). 
-
-When we plot the curve for the entire data set, it does not suggest a normal distribution. Data points appear to be bunched to the left (duration times in the range of 0-30 days or so), and there are a number of outliers, some of which approach a full year in duration. A discussion with the business unit revealed that much of this may be due to inconsistent  recordkeeping; while some staff enter a closure date as soon as an event has been addressed, others may batch their recordkeeping to occur every few months, thereby
-adding unusually high (and consequently incorrect) durations to the mix.
-
-This insight suggests we may get a more accurate / normalized view by cutting
-off the duration times at some lower value, thereby removing the effect of bad
-recordkeeping. Looking at the charts below, it appears that a more reasonable
-point to  is about 30 days. We will start with that value. 
-
-```{r Libraries and Import, echo=FALSE, warning=FALSE}
+```{r Libraries, data files, and general setup, echo=FALSE, warning=FALSE}
 #
 # Library setups
 #
@@ -231,11 +67,158 @@ num_L1             <- max(Level_codes$L1C)
 num_L2             <- max(Level_codes$L2C)
 num_L3             <- max(Level_codes$L3C)
 total_combinations <- num_L1 * num_L2 * num_L3
+```
 
-#
-# Plot of entire year events and durations
-#
+# Executive Summary
 
+**The Project** This document reports on the examination of one year's worth (2018) of service desk data - incident and service request tickets submitted as part of the overall technology group support activity. The dat was sourced from the organization's Cherwell application. This analysis is intended to provide insight into duration times, Service Level Agreement (SLA) target achievement, group performance, and, if possible, to provide a mechanism to forecast a given duration time - and alternatively, when an SLA target might be breached.
+
+**Fiindings** The data, while extensive, has certain flaws, the biggest of which is that it reflects inconsistent recordkeeping on part of the staff. Most staff close out a ticket immediately, but some batch their recordkeeping to take place weeks or even months after the fact. As a result, there are many outliers that have no real reason for being there, and therefore the findings have to be considered provisional - until the data quality can be improved..
+
+The data indicate that:
+
+* SLA targets - with some exceptions - are almost never met
+* Prioritization, particularly for service requests, is not meaningful
+* There are wide variations in staff performance
+* Until recordkeeping is more consistent, and prioritization is more scientific, it is not possible to predict ticket closure times beyond some level of averaging
+
+On the positive side, it is also true that focusing on a few selected areas could greatly improve overall metrics and performance.
+
+**Recommendations** The data suggests that the service desk management and team take the following steps:
+
+* *Focus on driving duration times down* through a combination of more consistent recordkeeping across the group and more dedicated management oversight to ensure this is happening. This will enable statistics to be far more reliable because outliers will be eliminated.
+
+* *Rethink SLAs* so that true priority 1's are acted on first. Part of this is to rethink the prioritization scheme; nearly all (99%) of the service requests are prioritized as priority 3's effectively having no prioritization at all. Instead, it becomes a large pile of equally important tickets, making it difficult for staff to differentiate between the truly important. Management may want to consider a 2-level prioritization for both incidents and service requests - for example, 1 day or 2 days for incidents, and 5 days or 10 days for service requests. This, of course, depends on whether or not the clients being supported feel these are fast enough resolution times. That may take some interviewing / surveying to confirm.
+
+* *Stress individual improvement* by making staff aware of their statistics. The wide variations in performance suggest it is possible the staff are unaware of the importance management is putting on SLA achievement and duration times. If staff were shown their performance statistics and provided with weekly updates, it is likely we would see a significant change in overall statistics. 
+
+* *Overall* there are serveral overarching recommendations:
+     + Management must be clear on the metrics they wish to achieve, communicate these to the staff, and build the necessary fields into Cherwell to gather the data to track them. For example, a more granular taxonomy for ticket classification, and the revised prioritization scheme recommended above.
+     + Adopt a weekly aging report to focus staff attention on what did not get closed within (the revised) SLA targets - and discuss why (as a team).
+     + Run the statistics produced by this code periodically - quarterly to semi-annually - to see what progress is being made toward management goals.
+
+# Background and Overview
+
+The Service Desk is seeking to improve its services by better managing
+customer tickets, particularly as they relate to SLAs (service level
+agreements). There are several interconnected problems to solve:
+
+* *Ticket Classification Accuracy* (both incidents and service requests) so
+tickets are properly prioritized and enable truly urgent items to be addressed
+first.
+
+* *Customer Expectation Transparency* so that clients have a more
+accurate window for ticket resolution. Workflow Improvement by addressing
+steps and tasks that slow the process down and lack of consistency within
+Operations. 
+
+* *Breach Forecasting* by determining what factors (alone or in
+combination) have the highest probability of causing breaches of the SLA, and
+identifying those for action. 
+
+* *Ticket Forensic Review* of tickets that breached their SLA through
+systematic examination of all  events/logs that led to the breach.
+
+The **desired end state** is that clients submitting tickets will receive immediate
+confirmation that their request has been received followed by a highly-reliable
+estimate when the request will be resolved. TSG (Technology Service Group) staff
+can, with great confidence, assume that any tickets on the top of the queue are
+the ones most important to address. Improved classification and forecasting
+reduce SLA breaches, and the management team is able to set more precise SLA
+parameters with no degradation in accuracy. The workflow operates consistently
+among all team members, and in those rare cases when an SLA is not met, all of
+the necessary data and reports are available to identify the problems so they
+can be addressed.
+
+In looking at the desired end state:
+
+* Some elements are management activities and are already possible. These include: 
+     + Providing clients with immediate confirmation
+     + Enabling staff to address the highest priority items first 
+     + Consistent workflow among all team members
+
+* The others can be addressed - at least in part - through management steps
+supported by insights from an analysis like this one: 
+     + Improved classification and forecasting 
+     + Setting more precise SLA parameters with no degradation in accuracy 
+     + Data and reports for forensics
+
+This analysis looks at the full year of 2018 incident and service request data to gain insight to address these latter three elements. The analysis consideres the following questions for the data collectively and for both incidents and service requests separately:
+
+* What are the type and nature of the problems? 
+* What kinds of problems are more prevalent? 
+* What are the characteristics of those problems? 
+     + Minimum  to address 
+     + Maximum times to address 
+     + Average times to address 
+     + The standard deviation of duration times
+
+The analysis also seeks to determine if there are any discernable *patterns*
+in the data, for example:
+
+* Do some kinds of problems take longer - and which? 
+* Do some owners resolve problems more quickly than others?
+     + Which owners?
+     + Which problems in particular?
+* Can we accurately predict how long those problems will take?
+
+# Approach
+
+A spreadsheet was extracted from Cherwell covering all events (incidets and
+service requests) for calendar 2018. The data set included a number of fields, and the  following were selected for use in the analysis:
+
+* Incident ID	
+* Created Date Time	
+* SLA Resolve By Deadline	
+* SLA_Time	
+* Closed Date Time
+* Dur_Time                    
+* Status	
+* Short Description	
+* Description	
+* Category	
+* Incident Type	
+* Call Source	
+* Cause	
+* Owner_ID	
+* Priority	
+
+The analysis then took the following steps:
+
+* Examined the shape of the data and the general characteristics
+* Determined that the data contained many outliers that skewed the data
+* Chose a better "maximum duration" value for a more normal data set
+* Split the analysis to look at incidents and service requests separately
+* Broke these two groups down into 89 lower-graularity problem categories
+* Generated a number of outputs for management, including:
+     + Basic descriptive statistics to be compared with SLA goals
+     + Views of the top problem generators and their characteristics
+     + Views of the problem owners and their speed and efficiency in addressing
+* Provided several views of how to predict likely problem duration
+* Developed a set of recommendations on how to proceed
+
+Before proceeding, it will be useful to understand a few terms as used in the analysis:
+
+* An *event* refers to any service desk incident or service request
+* An *incident* refers to an urgent event that must be addressed within 2 days
+* A *service request* refes to an event of lower urgency that can be addressed within 10 days
+* A *category* refers to a type of incident or service request, for example, a password reset, a security breach, or a request to setup and install a computer.
+* A *priority* is assigned to every event using the numbers 1 - 5. A priority 1 is the most urgent.
+* *Duration time* refers to the number of days between event creation and event closure. It measured in calendar days, excluding weekends, giving an approximation of the number of business days it took to close an event.
+* An *SLA* is a service level agreement. It is the stated commitment to the organization of when the event will be addressed. For incidents, this commitment is 2 days; for service requests, it is 10 days.
+* An *owner* is a member of the service desk staff who addresses a given event.
+
+# Descriptive Statistics
+
+We will start the analysis by looking at the general shape and characteristics of the data, determine how many levels down we need to go to get the necessary granularity, and then look at the descriptive statistics for those groupings.
+
+##  General Characteristics of the Data
+
+The original data set had 7130 events overall, split between 1522 incidents (21%) and 5603 service requests (79%). 
+
+When we plot the curve for the entire data set, it does not suggest a normal distribution. 
+
+```{r Plot of entire year events and durations, echo=FALSE}
 vdt <- dat$Dur_Time
 df <- as.data.frame(table(vdt))
 ggplot(df, aes(vdt, Freq)) +
@@ -246,7 +229,18 @@ ggplot(df, aes(vdt, Freq)) +
           y = "Number of Event Occurrences")
 ```
 
-Let's reset and look at the view when we limit the duration time to a **30-day maximum**. Now we begin to see a normal-ish clustering around lower duration times, particularly in the 4-6 day range.
+Data points appear to be bunched to the left (duration times in the range of
+0-30 days or so), and there are a number of outliers, some of which approach a
+full year in duration. A discussion with the business unit revealed that much of
+this may be due to inconsistent  recordkeeping; while some staff enter a closure
+date as soon as an event has been addressed, others may batch their
+recordkeeping to occur every few weeks or longer, thereby adding unusually high
+(and consequently incorrect) durations to the mix.
+
+This insight suggests we may get a more accurate / normalized view by cutting
+off the duration times at some lower value, thereby removing the real outliers -
+the effect of bad recordkeeping. Looking at the charts below, it appears that a
+more reasonable point to  is about 30 days. We will start with that value.
 
 ```{r Resetting data for 30-day limit, echo=FALSE, warning=FALSE}
 #
@@ -283,15 +277,19 @@ ggplot(df, aes(vdt, Freq)) +
      labs(title = "Events Duration Time and Frequecy - 30 Day Cutoff", x = "Duration", y = "Number of Event Occurences")
 ```
 
-The revised view shows high numbers of events clustered in the 0 to about 16
-day range, with a few events occurring after that. The number of events starts to approach zero (1 or 2 occurrences for a given duration) after that. For this analysis, we are going to assume that the data is "normal enough" and can provide us with enough confidence to look at basic statistics and then make predictions later on.
+The "revised "30-day maximum" view shows high numbers of events clustered in the
+0 to about 16 day range, with a few events occurring after that. The number of
+events starts to approach zero (1 or 2 occurrences for a given duration) beyond
+30 days. For this analysis, we are going to assume that the data is "normal
+enough" and can provide us with enough confidence to look at basic statistics
+and then make predictions later on.
 
 When plotting the number of events the distribution of all event types against
 *average* duration, we see a more promounced clustering of event types - this
 time in the 4-12 day range. There are still a few outliers but very few (just
 two event types). This further suggests that the "real" group performance is
-in a shorter range of durations - definitely less than 30 days and perhaps
-even ~20 days - and that a few event types tend to take a very long time.
+in a shorter range of durations - likely less than 30 days and perhaps
+even around 20 days.
 
 ```{r Plot to show Avg Dur vs. Events, echo=FALSE, warning=FALSE}
 # Set up a dataframe to plot duration vs. number of events for a duration time
@@ -352,9 +350,7 @@ newmat %>%
      labs(title = "Average Duration vs. Number of Events", x = "Average Duration", y = "Number of Events")
 ```
 
-A plot of all events against the day of the year gives us another view of event distribution through time (the calendar year). We see clustering below 10 days and then spread out in the 10-30 day range. This shows graphically where the average and median values are likely to be, in that darker clustering between 5-10 days.
-
-It is also fairly clear from this plot that there are *many* events that are not meeting SLA goals of 2 days for incidents and 10 days for service requests. We also see many priority 1's (the darkest dots) well above those SLA's.
+At this point we now know that most events - outliers aside - take a relatively few days to reseolve. We can gain additional perspective on their distribution with a plot of all events against the day of the year - with the additional insight of priority. In this next plot, darker dots are high priority items, ligher dots are lower priority.
 
 ```{r Plot showing full year durations, echo=FALSE, warning=FALSE}
 dat %>%
@@ -364,13 +360,23 @@ dat %>%
      labs(title = "Event Resolutions - Durations over the Year", x = "Day of the Year", y = "Duration (Days)")
 ```
 
-### An Overview of Incidents
+We see several things going on:
+
+* There is a definite clustering between 3 and 10 days and then we see the data
+points spread out a bit in the 10-30 day range. This clustering gives us our
+first hint of where the mean and median are likely to be.
+
+* The plot also suggests that there are *many* events that are not meeting the SLA goals of 2 days for incidents and 10 days for service requests. We also see many priority 1's (the darkest dots) well above those SLA's.
+
+* We see too many darker dots fairly up in duration. In a perfect world, all dark dots would be in the 0-2 day range, and the others between 3 and 10. This would meet the SLA targets. 
 
 The business unit has stated that incidents are more important than service requests - they have greater urgency. Therefore looking at all events together limits our insight; we will next look at them separately to see what additional information we can gather.
 
-When we reduce the dataset to those events with a maximum duration of 30 days, we end up with about 1450 incidents, or about 22% of the total. This is 1% higher than when there are no limits on the duration maximum.
+### An Overview of Incidents
 
-The average (mean) duration time for incidents is just over 6 days (3 times the SLA) with a median of 5 days. If it is true that inconsistent recordkeeping is driving up duration times, this is our first indication. It also provides management with its first real target for improvement if the goal is to meet the 2-day SLA target.
+When we reduce the dataset to those events with a maximum duration of 30 days, we end up with about 1450 incidents, or about 22% of the total (compared to 21% when there are no limits on the duration maximum).
+
+The average (mean) duration time for incidents is just over 6 days (which is 3 times the SLA) with a median of 5 days. With no limits on duration times, that number is between 11 and 12 days, giving us our first indication that inconsistent recordkeeping - if that indeed is the explanation for long duration times - has a fairly pronounced effect. This provides management with its first real area for improvement if the goal is to meet the 2-day SLA target.
 
 ```{r Display Incident Statistics, echo=FALSE, warning=FALSE}
 #*****************************************************************************
@@ -420,7 +426,7 @@ cat("Range of duration       :", round(inc_rng_dur, digits = 1))
 ### An Overview of Service Requests
 
 We see that there is not a significant difference between incident and service request
-duration statistics. The average is slightly higher and the mean is the same. The good news is that, on average, the service request SLA goal of 10 days is being met. We also learn that about many service requests exceed the SLA target.
+duration statistics. The average is slightly higher and the mean is the same. The good news is that, *on average*, the service request SLA goal of 10 days is being met. We also learn that many service requests exceed the SLA target.
 
 ```{r Display Serv Req Statistics, echo=FALSE, warning=FALSE}
 # Basic statistics
@@ -464,35 +470,37 @@ cat("Range of duration       :", round(srs_rng_dur, digits = 1))
 cat("Number above SLA target :", nrow(srasla))
 ```
 
-One big difference that jumps out is that there are far more priority 3
-Service Requests than 1's or 2's; incidents have relatively more priority 1's
-and 2's. We would expect this to be the case. However, we also see that too many of the priority 1's that do exist (darker colored dots) are seeing high duration times; management would like to see these in the 0-2 day range.
+One big difference that jumps out is that there are very few priority 1 and 2
+service requests - than the vast majority are priority 3's. In contrast,
+incidents have relatively more priority 1's and 2's. On the one hand, we would
+expect this to be the case. However, we also see a scattering of priority 1's
+(darker colored dots) with high duration times; management would like to see
+those in the 0-2 day range.
 
 ```{r Plot of Serv Req Durations, echo=FALSE, warning=FALSE}
 dat_svr %>%
      ggplot(aes(DOY, Dur_Time, color = Priority)) +
-     geom_point() + scale_y_log10() +
+     geom_point() + 
      theme_economist() + 
-     labs(title = "Service Request Resolutions - Date vs. Duration (log10 y axis)", x = "Day of the Year", y = "Duration (Days)")
-
-#*****************************************************************************
-#
-# Looking Deeper into subcategories
-#
-#*****************************************************************************
+     labs(title = "Service Request Resolutions - Date vs. Duration", 
+          x = "Day of the Year", 
+          y = "Duration (Days)")
 ```
 
 ### Looking at Subcategories
 
-We have to face the conclusion that, although these data points are
-interesting, even splitting into incidents and service requests tells us only
-a limited amount - not enough to tell us where the problems are or how to forecast
-likely durations as problems come in. More granularity is needed. To aid in this
-analysis, we constructed a 3-level hierarchy / taxonomy to classify incidents
-and service requests in specific categories and thereby to provide the granularity needed for
-analysis and insight. The original data contained a problem description fields, and this was used to make the various classifications. 
+Although these data points are interesting, splitting all events into incidents
+and service requests gives us limited insight - certainly not enough data to
+tell us where the problems are, what to work on, or how to forecast likely
+durations as problems come in. More granularity is needed. To aid in this
+analysis, we took the step of constructing a 3-level hierarchy / taxonomy to
+classify every event into one of 89 categories and thereby to provide
+significantly more granularity. The original data contained two problem
+description fields, and this was used to make the various classifications. These
+classifications and their validations are available by inspecting the .csv
+source file.
 
-The taxonomy has three primary categories (software, infrastructure and other). These could be used for further / higher level analysis at some point. The next level has nine categories - four mapped into software, four more into infrastructure, and a single "other." The final level has 68 categories mapped into the four software categories, thirteen into the infrasturcture categories, and "other" has three categories at the lowest level.
+The taxonomy has three primary categories (software, infrastructure and other). Note that these could be used for further / higher level analysis at some point. The next level has nine categories - four mapped into software, four more into infrastructure, and a single "other." The final level has 68 categories mapped into the four software categories, 18 into the infrasturcture categories, and three mapped into the "other" category.
 
 **Analysis Categories / Taxonomy**
 
@@ -501,9 +509,9 @@ The taxonomy has three primary categories (software, infrastructure and other). 
 Level_codes
 ```
 
-Classifying each of the events into these categories took significant time - about 40 hours for the full year of data - as well as another few hours to debug errors in consistency and validation calculations. However, the effort was valuable, because it make it possible to determine what event types were causing the majority of the problems and how long, on average, it was taking to address them. 
+Classifying each of the events into these categories took significant time - about 40 hours for the full year of data - including time to debug errors in consistency and validation calculations. However, the effort was valuable, because it make it possible to determine what event types were causing the majority of the problems and how long, on average, it was taking to address them. It also laid the groundwork for a predictive model, because we had a dataset analagous to the movielens dataset: instead of movies, users, and ratings, we had categories, owners, and durations.
 
-When we look at ALL events taken toghether, we can identify those that are causing most of the problems. Of the 89 possible event categories, relatively few are causing most of the problems in an almost perfect "80 / 20 rule". For example: 
+When we look at ALL events taken toghether, we can identify those that are causing most of the problems. Of the 89 possible event categories, relatively few are causing 80% of the problems - in fact, it is an almost perfect "80 / 20 rule": 
 
 ```{r Display the Events Causing 80% of Problems, echo=FALSE, warning=FALSE}
 events <- sum(newmat$Events) 
@@ -533,15 +541,15 @@ cat("A total of",epi,"combinations account for 80% of all tickets submitted")
 knitr::kable(finmat)
 ```
 
-As noted, this view includes **all** events (incidents and service requests
-combined). Nonetheless, the additional granularity provides a few insights:
+Just to be clear, this view includes **all** events (incidents and service requests
+combined) so it is still not completely useful. Nonetheless, the additional granularity provides a few insights:
 
 * The top problem-causers are a mix of software, infrastructure, and "other" 
 * Many of the top problems appear to be less technical (logins. moves, mail) 
 * Being lower tech, the average durations *might* be relatively easy to reduce
 
-As a side note, "GA and Other" is a general category. Tickets in this category are often
-vague, having problem descriptions such as:
+As an explanotory note, "GA and Other" is a general category. Tickets in this
+category are often vague, having problem descriptions such as:
 
 * Is Sally Schwartz's PC PD00396 ok after water leak on P4?
 * Hardware Support
@@ -551,14 +559,13 @@ vague, having problem descriptions such as:
 
 ...and are therefore not easily categorized otherwise.
 
-One other note on the taxonomy: the organization relies on many applications to run the business and these were called out in greater detail than might otherwise have been necessary. However, it was considered useful information to zero in on those applications that were requiring the majority of the user problems and consequently the most staff time.
+One other note on the taxonomy: the organization relies on many applications to run the business and these were called out in greater detail than might otherwise have been necessary (see taxonomy numbers 1-48). However, it was considered useful information, as it would enable analysis on those applications that were causing most of the problems and presumabley more of the staff's time - making them more expensive to support.
 
-When we plot these categories by number of events of each, we see these dynamics:
+Because there are more categories for software (48), we ee a few dynamics when we plot these categories by number of events for each:
 
-* Because there are more categories for software (48), they are spread out, with fewer events per category (left-hand portion of the plot). There are a total of 2552 software events, or 39% of all events.
-* Because there are fewer categories under infrastructure and "other" there tend to be more events under each (right-hand side of the plot). There are 3423 infrastructure events (51%) and 686 "other" events (10%).
-
-As noted above, this is useful; we can immediately see that of the many business applications, Google Apps and Zoom head the list in number of tickets. Presumably, this implies higher staff hours and support costs.
+* There are fewer events per category (left-hand portion of the plot). There are a total of 2552 software events - 39% of all events - and approximately 53 tickets per event on average.
+.
+* Because there are fewer categories under infrastructure and "other" there tend to be more events under each (right-hand side of the plot). There are 3423 infrastructure events (51% of all events, with an average of 190 events per category) and 686 "other" events (10% of all events, with an average of 229 events per category).
 
 ```{r Incidets by category, echo=FALSE, message=FALSE, warning=FALSE}
 newmat %>%
@@ -568,7 +575,9 @@ newmat %>%
      labs(title = "Number of Events by Category", x = "Event Category", y = "Number of Events")
 ```
 
-A simpler look at this distribution is possible via this bar chart:
+As noted above, this is useful; when looking at the portfolio of business applications, we can see that Google Apps and Zoom head the list in number of tickets. Presumably, this implies higher staff hours and support costs.
+
+we can also look at this distribution at a higher level - and perhaps simpler - with this bar chart:
 
 ```{r Bar Chart of Event Types, echo=FALSE}
 nrs <- nrow(dat %>% filter(L1N == "Software"))
@@ -584,22 +593,23 @@ ggplot(data = dfn, aes(x = pns, y = pnn)) +
      geom_text(aes(pns, pnn, label = pnn), 
                vjust = 1.5, color = "white", size = 4) +theme_economist() +
      theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
-     labs(title="Events by Major Category (SW, Inf, Other)",
+     labs(title="Events by Major Category (SW, Infrastructure, Other)",
           x="Major Category", y = "Events")
 ```
 
-
-Even the event subcategories - interesteing and useful as they are - are not getting us to the bottom of either incidents or service requests, so we will look at those two
-separately, looking at all 89 category types within incidents and service requests.
+Even these event subcategories - interesteing and useful as they are - are not getting us to the bottom of either incidents or service requests, so we will look at those two major groups separately, and look at the 89 category types within each.
 
 ## Incidents
 
 When we look at incidents broken out by category, we see some interesting data points:
 
-* Functional issues are not only the largest incident category, but they are taking unusually long to resolve (only two categories take longer on average).
-* Access and login issues have very high average durations, posing the question, is it really taking that long to provide access, and if so, is this interrupting the business flow?
+* Functional issues are not only the largest incident category, but they also tend to take longer to resolve that most other categories.
+
+* Access and login issues have very high average durations, posing the question, is it really taking that long to provide access, and if so, shy? And further, are these problems interrupting the business flow?
+
 * Zoom seems problematic and deserves futher discussion by the service desk team to understand where these problems are coming from. Are they with the Zoom rooms primarily or with the users themselves?
-* None of these top problem areas have acceptable SLA times - even with a 30-day cutoff for the data set. This chart may be a starting point for management discussion with the staff. 
+
+* None of these top problem areas have acceptable SLA times - even with a 30-day cutoff for the data set, average times are considerably over the SLA target. This chart may be a starting point for management discussion with the staff. 
 
 ```{r List of Incidents by Category, echo=FALSE, warning=FALSE}
 #*****************************************************************************
@@ -694,15 +704,11 @@ L3_inc_4_name <- finmat_inc[4,9]
 L3_inc_5_name <- finmat_inc[5,9]
 ```
 
-We also broke down the top five incident categories to see if there was anything to be learned by breaking out priorities, and if there was any correlation between a given priority and resolution times. For example, if higher priorities had lower rsolution times, that would be a good sign and vice-versa. Further, correlations might tell us something about what happens to durations when the number of incidents increases.
+We also broke out the top five incident categories to see if there was anything to be learned by looking at the distribution of priorities, and if there was any correlation between a given priority and resolution times. For example, if higher priorities had lower rsolution times, that would be a reasonable behavior and vice-versa. Further, correlations might tell us something about what happens to durations when the number of incidents increases.
 
 ### Top Incident Number 1 - Functional Issues
 
-```{r Incident #1, warning=FALSE, include=FALSE}
-L3_inc_1_name
-```
-
-We see the breakdown by priorty here. Note that a priority 1 is the most urgent, and 5 the least urgent. We expect duration times to lengthen with priority number, but never beyond two days. We see that this is not the case: 
+We see the breakdown by priorty here. Note that a priority 1 is the most urgent, and 5 the least urgent. We expect duration times to lengthen with priority number, but never beyond two days. We see that this is not really the case: 
 
 ```{r Incident #1 by Priority, echo=FALSE, warning=FALSE}
 #
@@ -746,13 +752,13 @@ knitr::kable(df_inc_priorities)
 
 A breakout like this provides some useful observations for team discussion and goal setting. Points that might be worthwhile considering:
 
-* Getting duration times down seems like a clear opportunity - especially Priority 1s and 2s. This is not a statistical issue but rather a management one, that is, by:
+* Getting duration times down. This seems like a clear opportunity - especially Priority 1s and 2s. This is not a statistical issue but rather a management one, that is, by:
      + Ensuring that events get the right priority classification
      + Keeping the top priority items visible to the team on a daily basis
      + Tracking their closure via an aging report
      + Rewarding staff for addressing items in priority order and reducing resolution times
-* Looking at the number of events are bunched around Priority 3 (are there *really* that many?) and asking if this reflects reality.
-* Considering a different approach to incident priortization, for example: **"fix on same day"** and **""fix by end of day 2""**
+* Looking at the number of events are bunched around Priority 3. With the current distribution we might ask if there *really* are that many, and if so, do we have a clear prioritization scheme?
+* Rethinking incident priortization. Perhaps something simpler, such as **"fix on same day"** and **""fix by end of day 2""** would work better.
 
 **Correlations**
 
@@ -1482,8 +1488,7 @@ df_inc_owners <- data.frame("Owner_ID" = 1:x_range_for_plot_max,
                             "MinDur"   = 1:x_range_for_plot_max,
                             "AvgDur"   = 1:x_range_for_plot_max,
                             "MMSpread" = 1:x_range_for_plot_max,
-                            "SD"       = 1:x_range_for_plot_max,
-                            "Owner"    = 1:x_range_for_plot_max)
+                            "SD"       = 1:x_range_for_plot_max)
 
 # Loop through the data file
 counter <- 1
@@ -1497,7 +1502,6 @@ for(i in owners_list$Owner_ID) {
           df_inc_owners[counter, 5] <- round(mean(x$Dur_Time), digits=1)
           df_inc_owners[counter, 6] <- max(x$Dur_Time) - min(x$Dur_Time)
           df_inc_owners[counter, 7] <- round(sd(x$Dur_Time), digits=1)
-          df_inc_owners[counter, 8] <- staff_names[i,1]
           counter <- counter + 1
      }
      else {
@@ -1508,8 +1512,7 @@ for(i in owners_list$Owner_ID) {
           df_inc_owners[counter, 5] <- 0
           df_inc_owners[counter, 6] <- 0
           df_inc_owners[counter, 7] <- 0
-          df_inc_owners[counter, 8] <- staff_names[i,1]
-          counter <- counter + 1
+          enter <- counter + 1
           }
 }
 knitr::kable(df_inc_owners)
@@ -1518,14 +1521,14 @@ knitr::kable(df_inc_owners)
 We see a tiering effect here - two staffers are handling very high numbers of incidents, a second tier group of four handling over 100 incidents, and a final tier of five where very few incidents are handled. To be fair, this is not enough inormation to make a judgment, as we do not know, for example, if some of these lower numbers are because the staff member was actually fully engaged with service requests.
 
 ```{r Plot - Incidents Owners vs. Number, echo=FALSE, warning=FALSE}
-ggplot(data = df_inc_owners, aes(x=Owner, y=Events)) +
+ggplot(data = df_inc_owners, aes(x=Owner_ID, y=Events)) +
      geom_bar(fill = "steelblue", stat="identity") +
-     geom_text(aes(Owner, Events, label = Events), 
+     geom_text(aes(Owner_ID, Events, label = Events), 
                vjust = -0.4, color = "black", size = 3.5) +
      theme_economist() +
      theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
      labs(title="Incidents - Events by Owner",
-          x="Owner Name", y = "Incidents")
+          x="Owner_ID", y = "Incidents")
 ```
 
 We are pleased to see that we have a couple of potential superstars on the team, but the next question would be, how quickly do they handle all of those? And what about those who handle fewer? Are they able to handle them faster because they have fewer?
@@ -1533,27 +1536,27 @@ We are pleased to see that we have a couple of potential superstars on the team,
 Looking at average duration times we see that the two staffers handling the larger numbers of incidents are also very competitive when it comes to duration times. The same is not true of the first staffer, who handled relatively few incidents and also tends to take a good deal longer to close an incident. We have already learned through interviews, however, that this is a case where recordkeeping is batched; therefore we cannot accurately reflect the time is actually took to close on those tickets.
 
 ```{r Plot - Incidents Owners vs. Avg Duration, echo=FALSE, warning=FALSE}
-ggplot(data=df_inc_owners, aes(x=Owner, y=AvgDur)) +
+ggplot(data=df_inc_owners, aes(x=Owner_ID, y=AvgDur)) +
      geom_bar(fill = "steelblue", stat="identity") + 
-     geom_text(aes(Owner, AvgDur, label = AvgDur), 
+     geom_text(aes(Owner_ID, AvgDur, label = AvgDur), 
                vjust = -0.5, color = "black", size = 3.5) +
      theme_economist() +
      theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
      labs(title="Incidents - Average Duration (Days) by Owner",
-          x="Owner Name", y = "Average Duration")
+          x="Owner ID", y = "Average Duration")
 ```
 
 When we look standard deviations, we see that the two staffers handling the most incidents are also very competitive relative to the total time needed to handle a given set of them. We also see one staff member with a standard deviation of 1.9, which implies that in that one case, 68% of the tickets would be addressed within the SLA target.
 
 ```{r Plot - Incidents Owners vs. SD, echo=FALSE, warning=FALSE}
-ggplot(df_inc_owners, aes(x=Owner, y=SD)) +
+ggplot(df_inc_owners, aes(x = Owner_ID, y = SD)) +
      geom_bar(fill = "steelblue", stat="identity") +
-     geom_text(aes(Owner, SD, label = SD), 
+     geom_text(aes(Owner_ID, SD, label = SD), 
                vjust = -0.5, color = "black", size = 3.5) +
      theme_economist() +
      theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
      labs(title="Incidents - Standard Deviations by Owner",
-          x="Owner Name", y = "Standard Deviation")
+          x="Owner_ID", y = "Standard Deviation")
 ```
 
 We can think of the standard deviation as a kind of efficiency metric, and we see a kind of efficiency tiering here. Five staff have standard deviations of under 3; four more are in the range of 3-6, and 2 are above that. In this case too, there may be *very* good reasons for this - a person might be generally assigned to longer-term projects or particularly knotty problems.
@@ -1574,8 +1577,7 @@ df_svr_owners <- data.frame("Owner_ID" = 1:x_range_for_plot_max,
                             "MinDur"   = 1:x_range_for_plot_max,
                             "AvgDur"   = 1:x_range_for_plot_max,
                             "MMSpread" = 1:x_range_for_plot_max,
-                            "SD"       = 1:x_range_for_plot_max,
-                            "Owner"    = 1:x_range_for_plot_max)
+                            "SD"       = 1:x_range_for_plot_max)
 
 # Loop through the data file
 counter <- 1
@@ -1589,7 +1591,6 @@ for(i in owners_list$Owner_ID) {
           df_svr_owners[counter, 5] <- round(mean(x$Dur_Time), digits=1)
           df_svr_owners[counter, 6] <- max(x$Dur_Time) - min(x$Dur_Time)
           df_svr_owners[counter, 7] <- round(sd(x$Dur_Time), digits=1)
-          df_svr_owners[counter, 8] <- staff_names[i,1]
           counter <- counter + 1
      }
      else {
@@ -1600,47 +1601,46 @@ for(i in owners_list$Owner_ID) {
           df_svr_owners[counter, 5] <- 0
           df_svr_owners[counter, 6] <- 0
           df_svr_owners[counter, 7] <- 0
-          df_svr_owners[counter, 8] <- staff_names[i,1]
           counter <- counter + 1
           return
      }
 }
 
 df_svr_owners_desc <- df_svr_owners[order(df_svr_owners$Events, decreasing=TRUE),]
-ggplot(data=df_svr_owners, aes(x=Owner, y=Events)) +
+ggplot(data=df_svr_owners, aes(x = Owner_ID, y=Events)) +
      geom_bar(fill = "steelblue", stat="identity") +
-     geom_text(aes(Owner, Events, label = Events), 
+     geom_text(aes(Owner_ID, Events, label = Events), 
                vjust = -0.5, color = "black", size = 3.5) +
      theme_economist() +
      theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
      labs(title="Service Requests - Events by Owner",
-          x="Owner Name", y = "Service Requests")
+          x="Owner_ID", y = "Service Requests")
 ```
 
 When we look at average duration, we see more of a two-tier structure. One group tends to get tickets resolved in 5-10 days (within SLA limits), and a second group (two members) does not. 
 
 ```{r Plot - SR Owners Volume of Tickets, echo=FALSE, warning=FALSE}
-ggplot(data=df_svr_owners, aes(x=Owner, y=AvgDur)) +
+ggplot(data=df_svr_owners, aes(x = Owner_ID, y=AvgDur)) +
      geom_bar(fill = "steelblue", stat="identity") + 
-     geom_text(aes(Owner, AvgDur, label = AvgDur), 
+     geom_text(aes(Owner_ID, AvgDur, label = AvgDur), 
                vjust = -0.5, color = "black", size = 3.5) +
      theme_economist() +
      theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
      labs(title="Service Requests - Average Duration by Owner",
-          x="Owner Name", y = "Average Duration")
+          x="Owner_ID", y = "Average Duration")
 ```
 
 In terms of standard deviation - a kind of speed metric (how long does it take me to do *all* my work?), we see five staffers who can get 95% percent of their tickets done within the SLA target (that is, they have a standard deviation of 5 or less). The others would complete at least 68% of their tickets within the SLA target, but no one is performing at a level where all of their work would be within the SLA range. 
 
 ```{r Plot - SR Owners vs. SD, echo=FALSE, warning=FALSE}
-ggplot(df_svr_owners, aes(x=Owner, y=SD)) +
+ggplot(df_svr_owners, aes(x = Owner_ID, y=SD)) +
      geom_bar(fill = "steelblue", stat="identity") +
-     geom_text(aes(Owner, SD, label = SD), 
+     geom_text(aes(Owner_ID, SD, label = SD), 
                vjust = -0.5, color = "black", size = 3.5) +
      theme_economist() +
      theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
      labs(title="Service Requests - Standard Deviations by Owner",
-          x="Owner Name", y = "Standard Deviation")
+          x="Owner_ID", y = "Standard Deviation")
 ```
 
 So who is the best performer overall? Of course, it depends on what you are measuring. For example, if we chose 3 metrics defiined this way:
@@ -1705,7 +1705,7 @@ df_inc <- dat_inc %>%
      select(L3C, Owner_ID, Priority, Dur_Time) 
 
 sn_inc <- staff_names %>%
-     select(Owner, Owner_ID)
+     select(Owner_ID)
 
 lc_inc <- Level_codes %>%
      select(L3C, L3N)
@@ -1724,7 +1724,7 @@ x_range_for_plot_max <- nrow(Level_codes)
 
 # define a dataframe to hold the output
 df_coa <- data.frame("Category"    = 1:x_range_for_plot_max,
-                     "Owner"       = 1:x_range_for_plot_max,
+                     "Owner_ID"       = 1:x_range_for_plot_max,
                      "AvgDur"      = 1:x_range_for_plot_max)
 
 # Loop through the data file
@@ -1734,7 +1734,7 @@ for(i in 1:num_L3) {
           x <- df_inc_2 %>% filter(L3C == i & Owner_ID == j)
           if(nrow(x) != 0) {
                df_coa[counter, 1] <- Level_codes[i,5]
-               df_coa[counter, 2] <- staff_names[j,1]
+               df_coa[counter, 2] <- j
                df_coa[counter, 3] <- round(mean(x$Dur_Time, digits = 2))
                counter <- counter + 1
           }
@@ -1748,7 +1748,7 @@ for(i in 1:num_L3) {
 ```
 
 ```{r Table - Avg Durations by Owner, echo=FALSE, warning=FALSE}
-df_coa_table <- dcast(df_coa, Category~Owner,value.var = "AvgDur")
+df_coa_table <- dcast(df_coa, Category~Owner_ID,value.var = "AvgDur")
 knitr::kable(df_coa_table)
 ```
 
@@ -1760,7 +1760,7 @@ In model building, we will focus on incidents for two reasons. First, management
 
 ```{r Set up Train and Test Data Sets, warning=FALSE, include=FALSE}
 # Set up the dataset for incidents only
-dat_inc_predict <- dat_inc %>% select(A_ID, L3C, L3N, Dur_Time, Owner_ID, Owned_By)
+dat_inc_predict <- dat_inc %>% select(A_ID, L3C, L3N, Dur_Time, Owner_ID)
 
 # Remove lines with less than 2 instances (else the aver)
 cat_index <- as.data.frame(table(dat_inc_predict$L3C)) %>%
@@ -1798,7 +1798,7 @@ RMSE is the standard deviation of the residuals (the prediction errors). Residua
 
 We calculate RMSE as the square root of the average of the actual duration minus the predicted duration squared. In R terms, it is:
 
-     sqrt(mean((act_duration - pred_duration)^2))
+**sqrt(mean((act_duration - pred_duration)^2))**
 
 RMSE is commonly used in forecasting and regression analysis to verify experimental results. In practical terms, it will tell us how far off the mark (the regression line) our data tends to be, and if we can get closer with some adjustments.
 
@@ -1821,7 +1821,7 @@ knitr::kable(rmse_results)
 
 So at the very least, we have a starting point - and RMSE for the basic, overall average from all incidents in the 30-day cutoff dataset.
 
-### Step 2 - Accounting for General Duration Bias
+### Step 2 - Accounting for Category Bias
 
 Next we introduce a factor we will call "beta c" or b_c, to account for general bias in category durations. We know that different categories are treated differently - some are more important that other ans presumably get faster attention. The term b_c represents the average duration for a given category c. The code looks like this:
 
@@ -1875,7 +1875,7 @@ rmse_results <- bind_rows(rmse_results,
 knitr::kable(rmse_results)
 ```
 
-We see that the new RMSE value is not lower - the simple average is still better (lower RMSE value). Apparently there are no factors causing a given category type to be significantly more complext or difficult that would cause extraordinarily long duration times.
+We see that the new RMSE value is not lower - the simple average is still better (lower RMSE value). Apparently there are no factors causing a given category type to be significantly more complext or difficult that would cause extraordinarily long duration times - perhaps our 30-day cutoff did the trick already?
 
 ### Step 3 - Accounting for Who Works the Problem
 
@@ -2040,7 +2040,11 @@ predicted_durations <- test_set %>%
      left_join(category_reg_avgs, by = "L3C") %>%
      mutate(pred = mu + b_c) %>%
      pull(pred)
+```
 
+When we calculate the new RMSE, we see that the regularized model does a little better than either of the two above, but still does not beat the simple average. 
+
+```{r Calculate and display the new RMSE, echo=FALSE, warning=FALSE}
 # Calculate RMSE
 model_3_rmse <- RMSE(predicted_durations, test_set$Dur_Time)
 
@@ -2053,21 +2057,17 @@ rmse_results <- bind_rows(rmse_results,
 knitr::kable(rmse_results)
 ```
 
-We see that the regularized model does a little better than either of the two above, but still does not beat the simple average. In the end, our 30-day cutoff had the most leverage in improving average duration times - it effectively blunt-forced a user effects model and regularization. They key management takeaway is *get rid of the outliers - anything above 30 days*.
-
-\newpage
+In the end, our 30-day cutoff apparently had the most leverage in improving average duration times - it effectively blunt-forced a user effects model **and** regularization simultaneously. They key management takeaway is *get rid of the outliers - anything above 30 days*. 
 
 # Conclusions 
 
 * One of the original goals of this analysis was to discover if there was a means to do breach forecasting (determine if a given ticket would exceed the SLA targets). Given that 1439 of the 1451 incidents (99.2%) exceeded SLA targets, it is actually safe to assume that *EVERY* ticket will cause a breach. The problem is not with forecasting, it is with getting duration times down. It is not nearly so bad with service requests, with only 780 of 5209 (15%) exceeding the SLA. Of course, both of these figures assume a 30-day cutoff on durations.
 
-* The number of very high duration tickets is troublesome. If it is bad recordkeeping, that can be fixed. If we are mis-classifying tickets (for example, using them from everything from major projects to a note to call someone back), then they should not be ente3red into Cherwell. For example, updating 450 desktops to a new virus software package is *not* a ticket, it is a project. We would expect projects to take weeks or months to finish.
+* The number of very high duration tickets is troublesome. If it is bad recordkeeping, that can be fixed. If we are mis-classifying tickets (for example, using them from everything from major projects to a note to call someone back), then they should not be entered into Cherwell. For example, updating 450 desktops to a new virus software package is *not* a ticket, it is a project. We would expect projects to take weeks or months to finish.
 
 * The service desk staff are likely unaware of their performance, or we would not see so many very high durations with no reasonable explanation. There is a lot of data in this report that management can use to convey the key problems of prioritization and recordkeeping consistency. The manager could hold one or more sessions to talk over the findings and create some action steps to resolve.
 
 * On the flip side, the staff may have useful insights as to why some of the odd correlations are occurring (for example, when more events cause maximum duration times to increase but minimum duration times to decrease). One suspects there will be some useful information gained from that discussion.
-
-\newpage
 
 # Recommendations
 
@@ -2095,8 +2095,6 @@ We see that the regularized model does a little better than either of the two ab
      
 * Based on the aging report, select 1 or 2 tickets per week on which to conduct a post mortem to determine what when right and what when wrong. Make adjustments in communication, the data, or the process accordingly.
  
-\newpage
-
 # Next Steps
 
 the next steps, which can be taken immediately, are:
@@ -2111,7 +2109,11 @@ the next steps, which can be taken immediately, are:
 
 * Once we have a critical mass of new data, update the code as needed and re-run everything to see where there have been areas of improvement. Updating code and the attendant tasks should not take more than a few days.
 
-# Appendix - Prototype Aging Report
+# Appendices
+
+## Prototype Aging Report
+
+Below we offer the management team a suggested format for a weekly aging report for tracking tickets that are exceeding SLA boundaries. This is easily created from a simple Cherwell extract. Names have been removed and replaced by blanks,
 
 ```{r Display Prototype Aging Report, echo=FALSE}
 # Import and Open the File
@@ -2119,5 +2121,22 @@ data_filename   <- "Sample Aging Report.csv"
 age_rep         <- read.csv(data_filename, stringsAsFactors = FALSE)
 knitr::kable(age_rep)
 ```
+
+## Output of the Predictive Model with No 30-Day Cutoff
+
+One question that is natural to ask is what would have happened to the predictive model if we had not enforced a cutoff at 30 days? When we run the model under these circumstances, we would have made a lambda selection - by trial and error - between -1.0 and +1.0, with the optimal lambda being negative 0.5. 
+
+![Alt text](Rplot-lambda-curve.png)
+
+This would have produced model results as follows:
+
+   method                              RMSE  
+   <chr>                              <dbl>  
+ 1 Simple Average (Mean) Duration      22.7  
+ 2 Category Effects Model              21.7  
+ 3 Owner Effects Model                 20.8  
+ 4 Regularized category Effects Model  21.7  
+ 
+The owner effects model would have produced more accurate results and this is intuitively makes sense if we believe that our 30-day cutoff model effectively removed the owner bias from poor recordkeeping. Without this cutoff, the model has to reinstate it by penalizing those very high duration times. 
 
 [End of Document]

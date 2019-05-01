@@ -1,0 +1,3805 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Bill James (BCDL) / jamesbcdl@gmail.com" />
+
+
+<title>Capstone CYO Project</title>
+
+<script src="2-CYO-project-markdown_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="2-CYO-project-markdown_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="2-CYO-project-markdown_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="2-CYO-project-markdown_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="2-CYO-project-markdown_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="2-CYO-project-markdown_files/navigation-1.1/tabsets.js"></script>
+<link href="2-CYO-project-markdown_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="2-CYO-project-markdown_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Capstone CYO Project</h1>
+<h4 class="author">Bill James (BCDL) / <a href="mailto:jamesbcdl@gmail.com">jamesbcdl@gmail.com</a></h4>
+<h4 class="date">May 2, 2019</h4>
+
+</div>
+
+
+<div id="executive-summary" class="section level1">
+<h1>Executive Summary</h1>
+<p><strong>The Project</strong> This document reports on the examination of one year’s worth (2018) of service desk data - incident and service request tickets submitted as part of the overall technology group support activity. The dat was sourced from the organization’s Cherwell application. This analysis is intended to provide insight into duration times, Service Level Agreement (SLA) target achievement, group performance, and, if possible, to provide a mechanism to forecast a given duration time - and alternatively, when an SLA target might be breached.</p>
+<p><strong>Fiindings</strong> The data, while extensive, has certain flaws, the biggest of which is that it reflects inconsistent recordkeeping on part of the staff. Most staff close out a ticket immediately, but some batch their recordkeeping to take place weeks or even months after the fact. As a result, there are many outliers that have no real reason for being there, and therefore the findings have to be considered provisional - until the data quality can be improved..</p>
+<p>The data indicate that:</p>
+<ul>
+<li>SLA targets - with some exceptions - are almost never met</li>
+<li>Prioritization, particularly for service requests, is not meaningful</li>
+<li>There are wide variations in staff performance</li>
+<li>Until recordkeeping is more consistent, and prioritization is more scientific, it is not possible to predict ticket closure times beyond some level of averaging</li>
+</ul>
+<p>On the positive side, it is also true that focusing on a few selected areas could greatly improve overall metrics and performance.</p>
+<p><strong>Recommendations</strong> The data suggests that the service desk management and team take the following steps:</p>
+<ul>
+<li><p><em>Focus on driving duration times down</em> through a combination of more consistent recordkeeping across the group and more dedicated management oversight to ensure this is happening. This will enable statistics to be far more reliable because outliers will be eliminated.</p></li>
+<li><p><em>Rethink SLAs</em> so that true priority 1’s are acted on first. Part of this is to rethink the prioritization scheme; nearly all (99%) of the service requests are prioritized as priority 3’s effectively having no prioritization at all. Instead, it becomes a large pile of equally important tickets, making it difficult for staff to differentiate between the truly important. Management may want to consider a 2-level prioritization for both incidents and service requests - for example, 1 day or 2 days for incidents, and 5 days or 10 days for service requests. This, of course, depends on whether or not the clients being supported feel these are fast enough resolution times. That may take some interviewing / surveying to confirm.</p></li>
+<li><p><em>Stress individual improvement</em> by making staff aware of their statistics. The wide variations in performance suggest it is possible the staff are unaware of the importance management is putting on SLA achievement and duration times. If staff were shown their performance statistics and provided with weekly updates, it is likely we would see a significant change in overall statistics.</p></li>
+<li><em>Overall</em> there are serveral overarching recommendations:
+<ul>
+<li>Management must be clear on the metrics they wish to achieve, communicate these to the staff, and build the necessary fields into Cherwell to gather the data to track them. For example, a more granular taxonomy for ticket classification, and the revised prioritization scheme recommended above.</li>
+<li>Adopt a weekly aging report to focus staff attention on what did not get closed within (the revised) SLA targets - and discuss why (as a team).</li>
+<li>Run the statistics produced by this code periodically - quarterly to semi-annually - to see what progress is being made toward management goals.</li>
+</ul></li>
+</ul>
+</div>
+<div id="background-and-overview" class="section level1">
+<h1>Background and Overview</h1>
+<p>The Service Desk is seeking to improve its services by better managing customer tickets, particularly as they relate to SLAs (service level agreements). There are several interconnected problems to solve:</p>
+<ul>
+<li><p><em>Ticket Classification Accuracy</em> (both incidents and service requests) so tickets are properly prioritized and enable truly urgent items to be addressed first.</p></li>
+<li><p><em>Customer Expectation Transparency</em> so that clients have a more accurate window for ticket resolution. Workflow Improvement by addressing steps and tasks that slow the process down and lack of consistency within Operations.</p></li>
+<li><p><em>Breach Forecasting</em> by determining what factors (alone or in combination) have the highest probability of causing breaches of the SLA, and identifying those for action.</p></li>
+<li><p><em>Ticket Forensic Review</em> of tickets that breached their SLA through systematic examination of all events/logs that led to the breach.</p></li>
+</ul>
+<p>The <strong>desired end state</strong> is that clients submitting tickets will receive immediate confirmation that their request has been received followed by a highly-reliable estimate when the request will be resolved. TSG (Technology Service Group) staff can, with great confidence, assume that any tickets on the top of the queue are the ones most important to address. Improved classification and forecasting reduce SLA breaches, and the management team is able to set more precise SLA parameters with no degradation in accuracy. The workflow operates consistently among all team members, and in those rare cases when an SLA is not met, all of the necessary data and reports are available to identify the problems so they can be addressed.</p>
+<p>In looking at the desired end state:</p>
+<ul>
+<li>Some elements are management activities and are already possible. These include:
+<ul>
+<li>Providing clients with immediate confirmation</li>
+<li>Enabling staff to address the highest priority items first</li>
+<li>Consistent workflow among all team members</li>
+</ul></li>
+<li>The others can be addressed - at least in part - through management steps supported by insights from an analysis like this one:
+<ul>
+<li>Improved classification and forecasting</li>
+<li>Setting more precise SLA parameters with no degradation in accuracy</li>
+<li>Data and reports for forensics</li>
+</ul></li>
+</ul>
+<p>This analysis looks at the full year of 2018 incident and service request data to gain insight to address these latter three elements. The analysis consideres the following questions for the data collectively and for both incidents and service requests separately:</p>
+<ul>
+<li>What are the type and nature of the problems?</li>
+<li>What kinds of problems are more prevalent?</li>
+<li>What are the characteristics of those problems?
+<ul>
+<li>Minimum to address</li>
+<li>Maximum times to address</li>
+<li>Average times to address</li>
+<li>The standard deviation of duration times</li>
+</ul></li>
+</ul>
+<p>The analysis also seeks to determine if there are any discernable <em>patterns</em> in the data, for example:</p>
+<ul>
+<li>Do some kinds of problems take longer - and which?</li>
+<li>Do some owners resolve problems more quickly than others?
+<ul>
+<li>Which owners?</li>
+<li>Which problems in particular?</li>
+</ul></li>
+<li>Can we accurately predict how long those problems will take?</li>
+</ul>
+</div>
+<div id="approach" class="section level1">
+<h1>Approach</h1>
+<p>A spreadsheet was extracted from Cherwell covering all events (incidets and service requests) for calendar 2018. The data set included a number of fields, and the following were selected for use in the analysis:</p>
+<ul>
+<li>Incident ID<br />
+</li>
+<li>Created Date Time</li>
+<li>SLA Resolve By Deadline<br />
+</li>
+<li>SLA_Time<br />
+</li>
+<li>Closed Date Time</li>
+<li>Dur_Time<br />
+</li>
+<li>Status<br />
+</li>
+<li>Short Description</li>
+<li>Description<br />
+</li>
+<li>Category<br />
+</li>
+<li>Incident Type</li>
+<li>Call Source<br />
+</li>
+<li>Cause</li>
+<li>Owner_ID<br />
+</li>
+<li>Priority</li>
+</ul>
+<p>The analysis then took the following steps:</p>
+<ul>
+<li>Examined the shape of the data and the general characteristics</li>
+<li>Determined that the data contained many outliers that skewed the data</li>
+<li>Chose a better “maximum duration” value for a more normal data set</li>
+<li>Split the analysis to look at incidents and service requests separately</li>
+<li>Broke these two groups down into 89 lower-graularity problem categories</li>
+<li>Generated a number of outputs for management, including:
+<ul>
+<li>Basic descriptive statistics to be compared with SLA goals</li>
+<li>Views of the top problem generators and their characteristics</li>
+<li>Views of the problem owners and their speed and efficiency in addressing</li>
+</ul></li>
+<li>Provided several views of how to predict likely problem duration</li>
+<li>Developed a set of recommendations on how to proceed</li>
+</ul>
+<p>Before proceeding, it will be useful to understand a few terms as used in the analysis:</p>
+<ul>
+<li>An <em>event</em> refers to any service desk incident or service request</li>
+<li>An <em>incident</em> refers to an urgent event that must be addressed within 2 days</li>
+<li>A <em>service request</em> refes to an event of lower urgency that can be addressed within 10 days</li>
+<li>A <em>category</em> refers to a type of incident or service request, for example, a password reset, a security breach, or a request to setup and install a computer.</li>
+<li>A <em>priority</em> is assigned to every event using the numbers 1 - 5. A priority 1 is the most urgent.</li>
+<li><em>Duration time</em> refers to the number of days between event creation and event closure. It measured in calendar days, excluding weekends, giving an approximation of the number of business days it took to close an event.</li>
+<li>An <em>SLA</em> is a service level agreement. It is the stated commitment to the organization of when the event will be addressed. For incidents, this commitment is 2 days; for service requests, it is 10 days.</li>
+<li>An <em>owner</em> is a member of the service desk staff who addresses a given event.</li>
+</ul>
+</div>
+<div id="descriptive-statistics" class="section level1">
+<h1>Descriptive Statistics</h1>
+<p>We will start the analysis by looking at the general shape and characteristics of the data, determine how many levels down we need to go to get the necessary granularity, and then look at the descriptive statistics for those groupings.</p>
+<div id="general-characteristics-of-the-data" class="section level2">
+<h2>General Characteristics of the Data</h2>
+<p>The original data set had 7130 events overall, split between 1522 incidents (21%) and 5603 service requests (79%).</p>
+<p>When we plot the curve for the entire data set, it does not suggest a normal distribution.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20of%20entire%20year%20events%20and%20durations-1.png" width="672" /></p>
+<p>Data points appear to be bunched to the left (duration times in the range of 0-30 days or so), and there are a number of outliers, some of which approach a full year in duration. A discussion with the business unit revealed that much of this may be due to inconsistent recordkeeping; while some staff enter a closure date as soon as an event has been addressed, others may batch their recordkeeping to occur every few weeks or longer, thereby adding unusually high (and consequently incorrect) durations to the mix.</p>
+<p>This insight suggests we may get a more accurate / normalized view by cutting off the duration times at some lower value, thereby removing the real outliers - the effect of bad recordkeeping. Looking at the charts below, it appears that a more reasonable point to is about 30 days. We will start with that value.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Resetting%20data%20for%2030-day%20limit-1.png" width="672" /></p>
+<p>The “revised”30-day maximum&quot; view shows high numbers of events clustered in the 0 to about 16 day range, with a few events occurring after that. The number of events starts to approach zero (1 or 2 occurrences for a given duration) beyond 30 days. For this analysis, we are going to assume that the data is “normal enough” and can provide us with enough confidence to look at basic statistics and then make predictions later on.</p>
+<p>When plotting the number of events the distribution of all event types against <em>average</em> duration, we see a more promounced clustering of event types - this time in the 4-12 day range. There are still a few outliers but very few (just two event types). This further suggests that the “real” group performance is in a shorter range of durations - likely less than 30 days and perhaps even around 20 days.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20to%20show%20Avg%20Dur%20vs.%20Events-1.png" width="672" /></p>
+<p>At this point we now know that most events - outliers aside - take a relatively few days to reseolve. We can gain additional perspective on their distribution with a plot of all events against the day of the year - with the additional insight of priority. In this next plot, darker dots are high priority items, ligher dots are lower priority.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20showing%20full%20year%20durations-1.png" width="672" /></p>
+<p>We see several things going on:</p>
+<ul>
+<li><p>There is a definite clustering between 3 and 10 days and then we see the data points spread out a bit in the 10-30 day range. This clustering gives us our first hint of where the mean and median are likely to be.</p></li>
+<li><p>The plot also suggests that there are <em>many</em> events that are not meeting the SLA goals of 2 days for incidents and 10 days for service requests. We also see many priority 1’s (the darkest dots) well above those SLA’s.</p></li>
+<li><p>We see too many darker dots fairly up in duration. In a perfect world, all dark dots would be in the 0-2 day range, and the others between 3 and 10. This would meet the SLA targets.</p></li>
+</ul>
+<p>The business unit has stated that incidents are more important than service requests - they have greater urgency. Therefore looking at all events together limits our insight; we will next look at them separately to see what additional information we can gather.</p>
+<div id="an-overview-of-incidents" class="section level3">
+<h3>An Overview of Incidents</h3>
+<p>When we reduce the dataset to those events with a maximum duration of 30 days, we end up with about 1450 incidents, or about 22% of the total (compared to 21% when there are no limits on the duration maximum).</p>
+<p>The average (mean) duration time for incidents is just over 6 days (which is 3 times the SLA) with a median of 5 days. With no limits on duration times, that number is between 11 and 12 days, giving us our first indication that inconsistent recordkeeping - if that indeed is the explanation for long duration times - has a fairly pronounced effect. This provides management with its first real area for improvement if the goal is to meet the 2-day SLA target.</p>
+<pre><code>## Total incidents         : 1451</code></pre>
+<pre><code>## Maximum duration        : 30</code></pre>
+<pre><code>## Minimum duration        : 1</code></pre>
+<pre><code>## Average duration        : 6.1</code></pre>
+<pre><code>## Median duration         : 5</code></pre>
+<pre><code>##      Number above median: 469</code></pre>
+<pre><code>##      Number at median   : 345</code></pre>
+<pre><code>##      Number below median: 637</code></pre>
+<pre><code>## Range of duration       : 29</code></pre>
+</div>
+<div id="an-overview-of-service-requests" class="section level3">
+<h3>An Overview of Service Requests</h3>
+<p>We see that there is not a significant difference between incident and service request duration statistics. The average is slightly higher and the mean is the same. The good news is that, <em>on average</em>, the service request SLA goal of 10 days is being met. We also learn that many service requests exceed the SLA target.</p>
+<pre><code>## Total Service Requests  : 5209</code></pre>
+<pre><code>## Maximum duration        : 30</code></pre>
+<pre><code>## Minimum duration        : 1</code></pre>
+<pre><code>## Average duration        : 7</code></pre>
+<pre><code>## Median duration         : 5</code></pre>
+<pre><code>##      Number above median: 2020</code></pre>
+<pre><code>##      Number at median   : 1143</code></pre>
+<pre><code>##      Number below median: 2046</code></pre>
+<pre><code>## Range of duration       : 29</code></pre>
+<pre><code>## Number above SLA target : 780</code></pre>
+<p>One big difference that jumps out is that there are very few priority 1 and 2 service requests - than the vast majority are priority 3’s. In contrast, incidents have relatively more priority 1’s and 2’s. On the one hand, we would expect this to be the case. However, we also see a scattering of priority 1’s (darker colored dots) with high duration times; management would like to see those in the 0-2 day range.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20of%20Serv%20Req%20Durations-1.png" width="672" /></p>
+</div>
+<div id="looking-at-subcategories" class="section level3">
+<h3>Looking at Subcategories</h3>
+<p>Although these data points are interesting, splitting all events into incidents and service requests gives us limited insight - certainly not enough data to tell us where the problems are, what to work on, or how to forecast likely durations as problems come in. More granularity is needed. To aid in this analysis, we took the step of constructing a 3-level hierarchy / taxonomy to classify every event into one of 89 categories and thereby to provide significantly more granularity. The original data contained two problem description fields, and this was used to make the various classifications. These classifications and their validations are available by inspecting the .csv source file.</p>
+<p>The taxonomy has three primary categories (software, infrastructure and other). Note that these could be used for further / higher level analysis at some point. The next level has nine categories - four mapped into software, four more into infrastructure, and a single “other.” The final level has 68 categories mapped into the four software categories, 18 into the infrasturcture categories, and three mapped into the “other” category.</p>
+<p><strong>Analysis Categories / Taxonomy</strong></p>
+<pre><code>##               L1N L1C               L2N L2C                        L3N L3C
+## 1        Software   1     Business Apps   1                Acrobat Pro   1
+## 2                   1                     1                  Adobe Air   2
+## 3                   1                     1            Adobe Analytics   3
+## 4                   1                     1                   Adobe CC   4
+## 5                   1                     1                Adobe Flash   5
+## 6                   1                     1          Adobe Illustrator   6
+## 7                   1                     1               Adobe Reader   7
+## 8                   1                     1                BetterCloud   8
+## 9                   1                     1                  Carbonite   9
+## 10                  1                     1                     Caspio  10
+## 11                  1                     1                   Ceridian  11
+## 12                  1                     1                   Cherwell  12
+## 13                  1                     1                    Concord  13
+## 14                  1                     1             Creative Cloud  14
+## 15                  1                     1                  Cyberduck  15
+## 16                  1                     1                   Docusign  16
+## 17                  1                     1                    Dropbox  17
+## 18                  1                     1                 Enterprise  18
+## 19                  1                     1                  Go-Global  19
+## 20                  1                     1                GoToMeeting  20
+## 21                  1                     1                  Greenshot  21
+## 22                  1                     1                   iContact  22
+## 23                  1                     1                     InCopy  23
+## 24                  1                     1                   InDesign  24
+## 25                  1                     1                    Intacct  25
+## 26                  1                     1                      JSHOL  26
+## 27                  1                     1                         K4  27
+## 28                  1                     1                       Kace  28
+## 29                  1                     1                   Keychain  29
+## 30                  1                     1                   Lastpass  30
+## 31                  1                     1                LibreOffice  31
+## 32                  1                     1                   Livelink  32
+## 33                  1                     1            Marketing Cloud  33
+## 34                  1                     1                     Merlin  34
+## 35                  1                     1                    M-Files  35
+## 36                  1                     1                 Multimedia  36
+## 37                  1                     1                  Omnifocus  37
+## 38                  1                     1                  Photoshop  38
+## 39                  1                     1               Pulse Secure  39
+## 40                  1                     1                    Pycharm  40
+## 41                  1                     1                 Salesforce  41
+## 42                  1                     1                SentinelOne  42
+## 43                  1                     1                      Skype  43
+## 44                  1                     1                      Slack  44
+## 45                  1                     1                     Trello  45
+## 46                  1                     1                    UltiPro  46
+## 47                  1                     1                      Visio  47
+## 48                  1                     1                       Zoom  48
+## 49                  1          Browsers   2                     Chrome  49
+## 50                  1                     2                    Firefox  50
+## 51                  1                     2                  IE / Edge  51
+## 52                  1                     2           Browsers - Other  52
+## 53                  1       Google Apps   3            Docs and Sheets  53
+## 54                  1                     3                   Calendar  54
+## 55                  1                     3                       Mail  55
+## 56                  1                     3                     Groups  56
+## 57                  1                     3                    Folders  57
+## 58                  1                     3                      Sites  58
+## 59                  1                     3           Chats or Google+  59
+## 60                  1                     3        Google Apps - Other  60
+## 61                  1         MS-Office   4                   MS Excel  61
+## 62                  1                     4                  MS Access  62
+## 63                  1                     4                 MS Outlook  63
+## 64                  1                     4               MS Publisher  64
+## 65                  1                     4                 MS Windows  65
+## 66                  1                     4                    MS Word  66
+## 67                  1                     4              MS Powerpoint  67
+## 68                  1                     4            MS Office Other  68
+## 69 Infrastructure   2    User Platforms   5                   Monitors  69
+## 70                  2                     5       Computer Accessories  70
+## 71                  2                     5         Setup and installs  71
+## 72                  2                     5         Updates / Upgrades  72
+## 73                  2                     5      Move / Close / Remove  73
+## 74                  2                     5          Functional Issues  74
+## 75                  2                     5 Infrastructure Placeholder  75
+## 76                  2 Printing &amp; Faxing   6        Printing / Scanning  76
+## 77                  2                     6                      Faxes  77
+## 78                  2         Telecomms   7     Network / Connectivity  78
+## 79                  2                     7                     Phones  79
+## 80                  2                     7           Teleconferencing  80
+## 81                  2 Security &amp; Access   8            Access or Login  81
+## 82                  2                     8                   Password  82
+## 83                  2                     8                File Access  83
+## 84                  2                     8      Breaches and Phishing  84
+## 85                  2                     8           Security - Other  85
+## 86                  2                     8       Security Placeholder  86
+## 87          Other   3      GA and Other   9            Outage or error  87
+## 88                  3                     9                   Training  88
+## 89                  3                     9               GA and Other  89</code></pre>
+<p>Classifying each of the events into these categories took significant time - about 40 hours for the full year of data - including time to debug errors in consistency and validation calculations. However, the effort was valuable, because it make it possible to determine what event types were causing the majority of the problems and how long, on average, it was taking to address them. It also laid the groundwork for a predictive model, because we had a dataset analagous to the movielens dataset: instead of movies, users, and ratings, we had categories, owners, and durations.</p>
+<p>When we look at ALL events taken toghether, we can identify those that are causing most of the problems. Of the 89 possible event categories, relatively few are causing 80% of the problems - in fact, it is an almost perfect “80 / 20 rule”:</p>
+<pre><code>## A total of 18 combinations account for 80% of all tickets submitted</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">L1</th>
+<th align="right">L2</th>
+<th align="right">L3</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+<th align="left">L3Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>71</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">71</td>
+<td align="right">604</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">8.9</td>
+<td align="right">29</td>
+<td align="left">Setup and installs</td>
+</tr>
+<tr class="even">
+<td>80</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">81</td>
+<td align="right">579</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">5.7</td>
+<td align="right">29</td>
+<td align="left">Access or Login</td>
+</tr>
+<tr class="odd">
+<td>55</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">55</td>
+<td align="right">551</td>
+<td align="right">27</td>
+<td align="right">3</td>
+<td align="right">5.6</td>
+<td align="right">24</td>
+<td align="left">Mail</td>
+</tr>
+<tr class="even">
+<td>87</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">89</td>
+<td align="right">476</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">6.5</td>
+<td align="right">29</td>
+<td align="left">GA and Other</td>
+</tr>
+<tr class="odd">
+<td>73</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">73</td>
+<td align="right">342</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">8.6</td>
+<td align="right">26</td>
+<td align="left">Move / Close / Remove</td>
+</tr>
+<tr class="even">
+<td>72</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">72</td>
+<td align="right">300</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">7.3</td>
+<td align="right">26</td>
+<td align="left">Updates / Upgrades</td>
+</tr>
+<tr class="odd">
+<td>78</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">79</td>
+<td align="right">287</td>
+<td align="right">29</td>
+<td align="right">1</td>
+<td align="right">6.7</td>
+<td align="right">28</td>
+<td align="left">Phones</td>
+</tr>
+<tr class="even">
+<td>60</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">60</td>
+<td align="right">273</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">5.7</td>
+<td align="right">29</td>
+<td align="left">Google Apps - Other</td>
+</tr>
+<tr class="odd">
+<td>74</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">74</td>
+<td align="right">259</td>
+<td align="right">29</td>
+<td align="right">4</td>
+<td align="right">6.9</td>
+<td align="right">25</td>
+<td align="left">Functional Issues</td>
+</tr>
+<tr class="even">
+<td>81</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">82</td>
+<td align="right">257</td>
+<td align="right">29</td>
+<td align="right">2</td>
+<td align="right">5.4</td>
+<td align="right">27</td>
+<td align="left">Password</td>
+</tr>
+<tr class="odd">
+<td>47</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">48</td>
+<td align="right">251</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">5.8</td>
+<td align="right">29</td>
+<td align="left">Zoom</td>
+</tr>
+<tr class="even">
+<td>75</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">76</td>
+<td align="right">235</td>
+<td align="right">25</td>
+<td align="right">1</td>
+<td align="right">6.2</td>
+<td align="right">24</td>
+<td align="left">Printing / Scanning</td>
+</tr>
+<tr class="odd">
+<td>40</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">41</td>
+<td align="right">201</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">9.3</td>
+<td align="right">29</td>
+<td align="left">Salesforce</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">18</td>
+<td align="right">174</td>
+<td align="right">29</td>
+<td align="right">4</td>
+<td align="right">7.1</td>
+<td align="right">25</td>
+<td align="left">Enterprise</td>
+</tr>
+<tr class="odd">
+<td>70</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">70</td>
+<td align="right">159</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">6.6</td>
+<td align="right">26</td>
+<td align="left">Computer Accessories</td>
+</tr>
+<tr class="even">
+<td>35</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">137</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">8.8</td>
+<td align="right">26</td>
+<td align="left">M-Files</td>
+</tr>
+<tr class="odd">
+<td>85</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">87</td>
+<td align="right">128</td>
+<td align="right">20</td>
+<td align="right">1</td>
+<td align="right">6.4</td>
+<td align="right">19</td>
+<td align="left">Outage or error</td>
+</tr>
+<tr class="even">
+<td>77</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">78</td>
+<td align="right">118</td>
+<td align="right">28</td>
+<td align="right">3</td>
+<td align="right">6.3</td>
+<td align="right">25</td>
+<td align="left">Network / Connectivity</td>
+</tr>
+</tbody>
+</table>
+<p>Just to be clear, this view includes <strong>all</strong> events (incidents and service requests combined) so it is still not completely useful. Nonetheless, the additional granularity provides a few insights:</p>
+<ul>
+<li>The top problem-causers are a mix of software, infrastructure, and “other”</li>
+<li>Many of the top problems appear to be less technical (logins. moves, mail)</li>
+<li>Being lower tech, the average durations <em>might</em> be relatively easy to reduce</li>
+</ul>
+<p>As an explanotory note, “GA and Other” is a general category. Tickets in this category are often vague, having problem descriptions such as:</p>
+<ul>
+<li>Is Sally Schwartz’s PC PD00396 ok after water leak on P4?</li>
+<li>Hardware Support</li>
+<li>Alarm in Tel/Data Room</li>
+<li>Paco Has Connection Issues</li>
+<li>Laptop Docking Station Not Working, Need Power Cable For Nearby Monitor</li>
+</ul>
+<p>…and are therefore not easily categorized otherwise.</p>
+<p>One other note on the taxonomy: the organization relies on many applications to run the business and these were called out in greater detail than might otherwise have been necessary (see taxonomy numbers 1-48). However, it was considered useful information, as it would enable analysis on those applications that were causing most of the problems and presumabley more of the staff’s time - making them more expensive to support.</p>
+<p>Because there are more categories for software (48), we ee a few dynamics when we plot these categories by number of events for each:</p>
+<ul>
+<li>There are fewer events per category (left-hand portion of the plot). There are a total of 2552 software events - 39% of all events - and approximately 53 tickets per event on average. .</li>
+<li>Because there are fewer categories under infrastructure and “other” there tend to be more events under each (right-hand side of the plot). There are 3423 infrastructure events (51% of all events, with an average of 190 events per category) and 686 “other” events (10% of all events, with an average of 229 events per category).</li>
+</ul>
+<p><img src="2-CYO-project-markdown_files/figure-html/Incidets%20by%20category-1.png" width="672" /></p>
+<p>As noted above, this is useful; when looking at the portfolio of business applications, we can see that Google Apps and Zoom head the list in number of tickets. Presumably, this implies higher staff hours and support costs.</p>
+<p>we can also look at this distribution at a higher level - and perhaps simpler - with this bar chart:</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Bar%20Chart%20of%20Event%20Types-1.png" width="672" /></p>
+<p>Even these event subcategories - interesteing and useful as they are - are not getting us to the bottom of either incidents or service requests, so we will look at those two major groups separately, and look at the 89 category types within each.</p>
+</div>
+</div>
+<div id="incidents" class="section level2">
+<h2>Incidents</h2>
+<p>When we look at incidents broken out by category, we see some interesting data points:</p>
+<ul>
+<li><p>Functional issues are not only the largest incident category, but they also tend to take longer to resolve that most other categories.</p></li>
+<li><p>Access and login issues have very high average durations, posing the question, is it really taking that long to provide access, and if so, shy? And further, are these problems interrupting the business flow?</p></li>
+<li><p>Zoom seems problematic and deserves futher discussion by the service desk team to understand where these problems are coming from. Are they with the Zoom rooms primarily or with the users themselves?</p></li>
+<li><p>None of these top problem areas have acceptable SLA times - even with a 30-day cutoff for the data set, average times are considerably over the SLA target. This chart may be a starting point for management discussion with the staff.</p></li>
+</ul>
+<pre><code>## A total of 17 combinations out of 64 account for 80% of the incidents</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">L1</th>
+<th align="right">L2</th>
+<th align="right">L3</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+<th align="left">L3Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>51</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">74</td>
+<td align="right">192</td>
+<td align="right">29</td>
+<td align="right">4</td>
+<td align="right">7.0</td>
+<td align="right">25</td>
+<td align="left">Functional Issues</td>
+</tr>
+<tr class="even">
+<td>57</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">81</td>
+<td align="right">151</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">5.3</td>
+<td align="right">18</td>
+<td align="left">Access or Login</td>
+</tr>
+<tr class="odd">
+<td>64</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">89</td>
+<td align="right">109</td>
+<td align="right">25</td>
+<td align="right">1</td>
+<td align="right">6.1</td>
+<td align="right">24</td>
+<td align="left">GA and Other</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">48</td>
+<td align="right">102</td>
+<td align="right">23</td>
+<td align="right">1</td>
+<td align="right">5.7</td>
+<td align="right">22</td>
+<td align="left">Zoom</td>
+</tr>
+<tr class="odd">
+<td>52</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">76</td>
+<td align="right">101</td>
+<td align="right">25</td>
+<td align="right">1</td>
+<td align="right">5.8</td>
+<td align="right">24</td>
+<td align="left">Printing / Scanning</td>
+</tr>
+<tr class="even">
+<td>62</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">87</td>
+<td align="right">86</td>
+<td align="right">20</td>
+<td align="right">1</td>
+<td align="right">6.3</td>
+<td align="right">19</td>
+<td align="left">Outage or error</td>
+</tr>
+<tr class="odd">
+<td>55</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">79</td>
+<td align="right">81</td>
+<td align="right">29</td>
+<td align="right">4</td>
+<td align="right">7.5</td>
+<td align="right">25</td>
+<td align="left">Phones</td>
+</tr>
+<tr class="even">
+<td>48</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">71</td>
+<td align="right">61</td>
+<td align="right">19</td>
+<td align="right">4</td>
+<td align="right">5.9</td>
+<td align="right">15</td>
+<td align="left">Setup and installs</td>
+</tr>
+<tr class="odd">
+<td>58</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">82</td>
+<td align="right">53</td>
+<td align="right">21</td>
+<td align="right">2</td>
+<td align="right">5.4</td>
+<td align="right">19</td>
+<td align="left">Password</td>
+</tr>
+<tr class="even">
+<td>54</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">78</td>
+<td align="right">52</td>
+<td align="right">28</td>
+<td align="right">3</td>
+<td align="right">6.3</td>
+<td align="right">25</td>
+<td align="left">Network / Connectivity</td>
+</tr>
+<tr class="odd">
+<td>37</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">55</td>
+<td align="right">49</td>
+<td align="right">16</td>
+<td align="right">4</td>
+<td align="right">5.6</td>
+<td align="right">12</td>
+<td align="left">Mail</td>
+</tr>
+<tr class="even">
+<td>49</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">72</td>
+<td align="right">27</td>
+<td align="right">25</td>
+<td align="right">4</td>
+<td align="right">7.4</td>
+<td align="right">21</td>
+<td align="left">Updates / Upgrades</td>
+</tr>
+<tr class="odd">
+<td>31</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">49</td>
+<td align="right">25</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">7.2</td>
+<td align="right">26</td>
+<td align="left">Chrome</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">30</td>
+<td align="right">23</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">5.0</td>
+<td align="right">5</td>
+<td align="left">Lastpass</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">18</td>
+<td align="right">22</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">4.4</td>
+<td align="right">2</td>
+<td align="left">Enterprise</td>
+</tr>
+<tr class="even">
+<td>46</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">69</td>
+<td align="right">21</td>
+<td align="right">26</td>
+<td align="right">1</td>
+<td align="right">8.0</td>
+<td align="right">25</td>
+<td align="left">Monitors</td>
+</tr>
+<tr class="odd">
+<td>47</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">70</td>
+<td align="right">21</td>
+<td align="right">12</td>
+<td align="right">4</td>
+<td align="right">5.5</td>
+<td align="right">8</td>
+<td align="left">Computer Accessories</td>
+</tr>
+</tbody>
+</table>
+<p>We also broke out the top five incident categories to see if there was anything to be learned by looking at the distribution of priorities, and if there was any correlation between a given priority and resolution times. For example, if higher priorities had lower rsolution times, that would be a reasonable behavior and vice-versa. Further, correlations might tell us something about what happens to durations when the number of incidents increases.</p>
+<div id="top-incident-number-1---functional-issues" class="section level3">
+<h3>Top Incident Number 1 - Functional Issues</h3>
+<p>We see the breakdown by priorty here. Note that a priority 1 is the most urgent, and 5 the least urgent. We expect duration times to lengthen with priority number, but never beyond two days. We see that this is not really the case:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">11</td>
+<td align="right">18</td>
+<td align="right">4</td>
+<td align="right">7.2</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">30</td>
+<td align="right">24</td>
+<td align="right">4</td>
+<td align="right">7.8</td>
+<td align="right">20</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">82</td>
+<td align="right">21</td>
+<td align="right">4</td>
+<td align="right">6.2</td>
+<td align="right">17</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">34</td>
+<td align="right">22</td>
+<td align="right">4</td>
+<td align="right">7.5</td>
+<td align="right">18</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">35</td>
+<td align="right">29</td>
+<td align="right">4</td>
+<td align="right">7.6</td>
+<td align="right">25</td>
+</tr>
+</tbody>
+</table>
+<p>A breakout like this provides some useful observations for team discussion and goal setting. Points that might be worthwhile considering:</p>
+<ul>
+<li>Getting duration times down. This seems like a clear opportunity - especially Priority 1s and 2s. This is not a statistical issue but rather a management one, that is, by:
+<ul>
+<li>Ensuring that events get the right priority classification</li>
+<li>Keeping the top priority items visible to the team on a daily basis</li>
+<li>Tracking their closure via an aging report</li>
+<li>Rewarding staff for addressing items in priority order and reducing resolution times</li>
+</ul></li>
+<li>Looking at the number of events are bunched around Priority 3. With the current distribution we might ask if there <em>really</em> are that many, and if so, do we have a clear prioritization scheme?</li>
+<li>Rethinking incident priortization. Perhaps something simpler, such as <strong>“fix on same day”</strong> and <strong>“”fix by end of day 2“”</strong> would work better.</li>
+</ul>
+<p><strong>Correlations</strong></p>
+<p>A correlation is when one variable moves with another. Sometimes this is positive (when temperatures go up, the faster air molecules move) or negative (the more rabbits in a garden, the fewer the lettuces we have). Correlations range from -1 (strong negative) to +1 (strong positive). A correclation around 0 indicates randomness / no correlation. Correlations start to become interesting past the 0.5 mark, and especially around the 0.8 or 0.9 mark.</p>
+<p>We look at these to see what might be driving what. In this case:</p>
+<ul>
+<li><p><em>Maximum duration</em> is moving with priority (and this would be expected). That is, with a higher priority <em>nunmber</em> (which means a lower priorty), we see maximum duration times going up at a 0.77 correlation, which is moderately strong. This may imply that staff are (quite rightly) leaving lower priority items to when they can get to them.</p></li>
+<li><p>Events seem to drive <em>average duration times</em> negatively at a relatively strong correlation of -0.77 - that is, as the number of incidents goes up, the average time to close on them seems to go down. While this is counter-intuitive, there could be reasons for this such as staff jumping on a problem set more intensely during a crisis period. However, it deserves discussion with the service desk staff.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Pr</th>
+<th align="left">iority</th>
+<th align="center">Events</th>
+<th>MaxDur Min</th>
+<th align="left">Dur</th>
+<th align="center">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">Priority</td>
+<td align="left">1.0000000</td>
+<td align="center">0.3133895</td>
+<td>0.7738232</td>
+<td align="left">NA</td>
+<td align="center">0.1253137</td>
+</tr>
+<tr class="even">
+<td align="right">Events</td>
+<td align="left">0.3133895</td>
+<td align="center">1.0000000</td>
+<td>0.0592279</td>
+<td align="left">NA</td>
+<td align="center">-0.7751687</td>
+</tr>
+<tr class="odd">
+<td align="right">MaxDur</td>
+<td align="left">0.7738232</td>
+<td align="center">0.0592279</td>
+<td>1.0000000</td>
+<td align="left">NA</td>
+<td align="center">0.4615802</td>
+</tr>
+<tr class="even">
+<td align="right">MinDur</td>
+<td align="left">NA</td>
+<td align="center">NA</td>
+<td>NA</td>
+<td align="left">1</td>
+<td align="center">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">AvgDur</td>
+<td align="left">0.1253137</td>
+<td align="center">-0.7751687</td>
+<td>0.4615802</td>
+<td align="left">NA</td>
+<td align="center">1.0000000</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+<div id="top-incident-number-2---access-and-login" class="section level3">
+<h3>Top Incident Number 2 - Access and Login</h3>
+<p>In this 2nd category, we notice that:</p>
+<ul>
+<li>Most are priority 3 to 5; there are very few 1’s. This is a little surpising as usually needing to login to a system or desktop is an urgent issue.</li>
+<li>Average durations are high - even priority 1’s are 2x the SLA target.</li>
+</ul>
+<p>Given that access and login issues are often resolvable quickly, his seems like an opportunity to dramatically lower average resolution times. And if the incident involves some kind of approval chain, then reclassify it as a service request.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">15</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">4.9</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">69</td>
+<td align="right">19</td>
+<td align="right">1</td>
+<td align="right">5.6</td>
+<td align="right">18</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">46</td>
+<td align="right">14</td>
+<td align="right">4</td>
+<td align="right">5.0</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">20</td>
+<td align="right">14</td>
+<td align="right">4</td>
+<td align="right">5.5</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correlations</strong></p>
+<p>When we look at correlations, we see:</p>
+<ul>
+<li><p>When the priority goes up (a higher number means a lower priority), both average and maximum durations increase (0.77 and 0.70 respectively). This makes sense (lower priority items should take longer).</p></li>
+<li><p>Similarly, when the number of events goes up, both the average and maximum duration times go up with correlations of 0.71 and 0.91 (moderately to very strong). Again, seems right.</p></li>
+<li><p>Oddly, the more events, the <em>shorter</em> the minimum duration time with a strong correlation of 0.79 - this needs discussion (why is this happening?).</p></li>
+<li><p>Average duration and maximum duration are traveling very close together (0.9 correction) suggesting that when events pile up, time suffers.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Pr</th>
+<th align="left">iority</th>
+<th align="center">Events</th>
+<th align="center">MaxDur</th>
+<th align="center">MinDur</th>
+<th align="center">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">Priority</td>
+<td align="left">1.0000000</td>
+<td align="center">0.4022247</td>
+<td align="center">0.7029595</td>
+<td align="center">0.0000000</td>
+<td align="center">0.7702012</td>
+</tr>
+<tr class="even">
+<td align="right">Events</td>
+<td align="left">0.4022247</td>
+<td align="center">1.0000000</td>
+<td align="center">0.9097099</td>
+<td align="center">-0.7996618</td>
+<td align="center">0.7082246</td>
+</tr>
+<tr class="odd">
+<td align="right">MaxDur</td>
+<td align="left">0.7029595</td>
+<td align="center">0.9097099</td>
+<td align="center">1.0000000</td>
+<td align="center">-0.6882472</td>
+<td align="center">0.9135627</td>
+</tr>
+<tr class="even">
+<td align="right">MinDur</td>
+<td align="left">0.0000000</td>
+<td align="center">-0.7996618</td>
+<td align="center">-0.6882472</td>
+<td align="center">1.0000000</td>
+<td align="center">-0.5270463</td>
+</tr>
+<tr class="odd">
+<td align="right">AvgDur</td>
+<td align="left">0.7702012</td>
+<td align="center">0.7082246</td>
+<td align="center">0.9135627</td>
+<td align="center">-0.5270463</td>
+<td align="center">1.0000000</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+<div id="top-incident-number-3---ga-general-administration-and-other" class="section level3">
+<h3>Top Incident Number 3 - GA (General Administration) and Other</h3>
+<pre><code>## [1] &quot;GA and Other&quot;</code></pre>
+<p>As before, priorities are bunched at priority 3, but even more so. Priority 2’s have an unusually long average duration relative to other priorities. This suggests that:</p>
+<ul>
+<li>Prioritization is difficult and therefore the default is generally 3</li>
+<li>Once prioritized, it is difficult to believe the prioritization and therefore problems are addressed more randomly (with 2’s suffering the most)</li>
+<li>There may be some better way to communicate the urgency of items which are in a category that admittedly does not lend itself to a sense of urgency. Alternatively, more precise classification of the kind of problem may give it more visibility and therefore a shorter duration time.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">16</td>
+<td align="right">4</td>
+<td align="right">10.0</td>
+<td align="right">12</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">78</td>
+<td align="right">25</td>
+<td align="right">1</td>
+<td align="right">6.0</td>
+<td align="right">24</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">13</td>
+<td align="right">19</td>
+<td align="right">4</td>
+<td align="right">6.1</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">12</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">5.1</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correlations</strong></p>
+<p>The correlations here are odd, but perhaps explainable:</p>
+<ul>
+<li>There seems to be no correlation between priority and time - that incidents are resolved without regard to their original priority</li>
+<li><p>There is a strong correlation between both maximum and minimum durations <em>at the same time.</em> This is very strange, suggesting that as work piles up, tickets either get addressed very qucikly or very slowly, with fewer in the middle / average time.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">P</th>
+<th align="left">riority</th>
+<th align="center">Events</th>
+<th align="center">MaxDur</th>
+<th align="center">MinDur</th>
+<th align="center">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">Priority</td>
+<td align="left">1.0000000</td>
+<td align="center">0.1491301</td>
+<td align="center">0.2059766</td>
+<td align="center">0.0000000</td>
+<td align="center">-0.1186406</td>
+</tr>
+<tr class="even">
+<td align="right">Events</td>
+<td align="left">0.1491301</td>
+<td align="center">1.0000000</td>
+<td align="center">0.7515504</td>
+<td align="center">-0.9877236</td>
+<td align="center">-0.0612660</td>
+</tr>
+<tr class="odd">
+<td align="right">MaxDur</td>
+<td align="left">0.2059766</td>
+<td align="center">0.7515504</td>
+<td align="center">1.0000000</td>
+<td align="center">-0.7017560</td>
+<td align="center">0.4367330</td>
+</tr>
+<tr class="even">
+<td align="right">MinDur</td>
+<td align="left">0.0000000</td>
+<td align="center">-0.9877236</td>
+<td align="center">-0.7017560</td>
+<td align="center">1.0000000</td>
+<td align="center">0.0592176</td>
+</tr>
+<tr class="odd">
+<td align="right">AvgDur</td>
+<td align="left">-0.1186406</td>
+<td align="center">-0.0612660</td>
+<td align="center">0.4367330</td>
+<td align="center">0.0592176</td>
+<td align="center">1.0000000</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</div>
+<div id="top-incident-number-4---zoom" class="section level3">
+<h3>Top Incident Number 4 - Zoom</h3>
+<pre><code>## [1] &quot;Zoom&quot;</code></pre>
+<p>It is not surprising that Zoom made the top 10 list. It is the standard for teleconferncing for the organization and most conference rooms are set up to be Zoom rooms. Therefore there are two opportunities for things to go wrong: first with the user; second, with the physical equipment in the room; and third, with the connectivity between the hardware pieces and infrastructure.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">19</td>
+<td align="right">4</td>
+<td align="right">6.3</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">19</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">5.1</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">45</td>
+<td align="right">23</td>
+<td align="right">1</td>
+<td align="right">6.3</td>
+<td align="right">22</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">21</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">5.0</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">4.6</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p><img src="2-CYO-project-markdown_files/figure-html/Incident%204%20Plot-1.png" width="672" /></p>
+<p>The “curve” of the data here has more of the look of a normal distribution - most values are in the middle (priority 3) with roughly equal numbers of events in priority 2 and 4, and again with priorities 1 and 5. This is a little more like we would expect as the norm.</p>
+<p>Average durations are still not meeting SLAs overall and are particularly problematic for Priority 1’s (highest average duration, second highest maximum duration).</p>
+<p><strong>Correlations </strong></p>
+<p>As we have seen in a couple of other instances, in this case, Priority is driving average duration downward, which is not what we would expect; because a higher priority number means a lower priority in urgency, we would expect average duration to go up, not down.</p>
+<p>In the case of events, we are seeing that the number of incidents <em>increase</em> the maximum duration while simultaneously <em>decreasing</em> the minimum duration. As seen earlier, is this because as the work piles up, things tend to get done either very fast or very slow?</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.0422766</td>
+<td align="right">-0.5205805</td>
+<td align="right">0.0000000</td>
+<td align="right">-0.7011227</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td align="right">-0.0422766</td>
+<td align="right">1.0000000</td>
+<td align="right">0.6406350</td>
+<td align="right">-0.9192425</td>
+<td align="right">0.5013576</td>
+</tr>
+<tr class="odd">
+<td>MaxDur</td>
+<td align="right">-0.5205805</td>
+<td align="right">0.6406350</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.7522167</td>
+<td align="right">0.9711930</td>
+</tr>
+<tr class="even">
+<td>MinDur</td>
+<td align="right">0.0000000</td>
+<td align="right">-0.9192425</td>
+<td align="right">-0.7522167</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.5949223</td>
+</tr>
+<tr class="odd">
+<td>AvgDur</td>
+<td align="right">-0.7011227</td>
+<td align="right">0.5013576</td>
+<td align="right">0.9711930</td>
+<td align="right">-0.5949223</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="top-incident-number-5---printing-scanning" class="section level3">
+<h3>Top Incident Number 5 - Printing / Scanning</h3>
+<p>As in the case of Zoom, the distribution is more normal-like but to a lesser degree; while priorities 2, 3, and 4 look about right, there is an imbalance between priorities 1 and 5.</p>
+<p>As we have seen before, the average durations for the various priorities seem more random than purposeful, and the average duration for priority 1 seems particularly problematic. It suggests (as similar cases have suggested) that service desk staff need to assign priorities accurately, and then focus on the top priorities first. This would likely produce (over time) a normally distributed data shape with very low average durations (under 2 days) for higher priority tickets.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">13</td>
+<td align="right">4</td>
+<td align="right">8.5</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">24</td>
+<td align="right">25</td>
+<td align="right">1</td>
+<td align="right">6.4</td>
+<td align="right">24</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">37</td>
+<td align="right">11</td>
+<td align="right">3</td>
+<td align="right">5.2</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">23</td>
+<td align="right">11</td>
+<td align="right">4</td>
+<td align="right">4.7</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">15</td>
+<td align="right">25</td>
+<td align="right">4</td>
+<td align="right">7.3</td>
+<td align="right">21</td>
+</tr>
+</tbody>
+</table>
+<p><img src="2-CYO-project-markdown_files/figure-html/Incident%205%20Plot-1.png" width="672" /></p>
+<p><strong>Correlations</strong></p>
+<p>The only strong correlation in this case is the number of events and average duration. It is (again) odd that the more tickets, the lower the average duration.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority</td>
+<td align="right">1.0000000</td>
+<td align="right">0.3070780</td>
+<td align="right">0.2151657</td>
+<td align="right">0.3638034</td>
+<td align="right">-0.4195924</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td align="right">0.3070780</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.1480028</td>
+<td align="right">-0.4200523</td>
+<td align="right">-0.8525313</td>
+</tr>
+<tr class="odd">
+<td>MaxDur</td>
+<td align="right">0.2151657</td>
+<td align="right">-0.1480028</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.4696682</td>
+<td align="right">0.3567237</td>
+</tr>
+<tr class="even">
+<td>MinDur</td>
+<td align="right">0.3638034</td>
+<td align="right">-0.4200523</td>
+<td align="right">-0.4696682</td>
+<td align="right">1.0000000</td>
+<td align="right">0.1588544</td>
+</tr>
+<tr class="odd">
+<td>AvgDur</td>
+<td align="right">-0.4195924</td>
+<td align="right">-0.8525313</td>
+<td align="right">0.3567237</td>
+<td align="right">0.1588544</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="service-requests" class="section level2">
+<h2>Service Requests</h2>
+<p>We now turn our attention to <strong>service requests</strong>, following a path similar to the one we took for incidents. Looking through the data file, we find that there are 5209 service requests, and learn that:</p>
+<pre><code>## A total of 18 combinations out of 86 account for 80% of the service requests</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">L1</th>
+<th align="right">L2</th>
+<th align="right">L3</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+<th align="left">L3Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>70</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">71</td>
+<td align="right">543</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">9.2</td>
+<td align="right">29</td>
+<td align="left">Setup and installs</td>
+</tr>
+<tr class="even">
+<td>55</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">55</td>
+<td align="right">502</td>
+<td align="right">27</td>
+<td align="right">3</td>
+<td align="right">5.6</td>
+<td align="right">24</td>
+<td align="left">Mail</td>
+</tr>
+<tr class="odd">
+<td>79</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">81</td>
+<td align="right">428</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">5.9</td>
+<td align="right">29</td>
+<td align="left">Access or Login</td>
+</tr>
+<tr class="even">
+<td>86</td>
+<td align="right">3</td>
+<td align="right">9</td>
+<td align="right">89</td>
+<td align="right">367</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">6.6</td>
+<td align="right">29</td>
+<td align="left">GA and Other</td>
+</tr>
+<tr class="odd">
+<td>72</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">73</td>
+<td align="right">323</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">8.7</td>
+<td align="right">26</td>
+<td align="left">Move / Close / Remove</td>
+</tr>
+<tr class="even">
+<td>71</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">72</td>
+<td align="right">273</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">7.3</td>
+<td align="right">26</td>
+<td align="left">Updates / Upgrades</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">60</td>
+<td align="right">269</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">5.8</td>
+<td align="right">29</td>
+<td align="left">Google Apps - Other</td>
+</tr>
+<tr class="even">
+<td>77</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">79</td>
+<td align="right">206</td>
+<td align="right">29</td>
+<td align="right">1</td>
+<td align="right">6.4</td>
+<td align="right">28</td>
+<td align="left">Phones</td>
+</tr>
+<tr class="odd">
+<td>80</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">82</td>
+<td align="right">204</td>
+<td align="right">29</td>
+<td align="right">4</td>
+<td align="right">5.4</td>
+<td align="right">25</td>
+<td align="left">Password</td>
+</tr>
+<tr class="even">
+<td>40</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">41</td>
+<td align="right">188</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">9.5</td>
+<td align="right">29</td>
+<td align="left">Salesforce</td>
+</tr>
+<tr class="odd">
+<td>18</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">18</td>
+<td align="right">152</td>
+<td align="right">29</td>
+<td align="right">4</td>
+<td align="right">7.5</td>
+<td align="right">25</td>
+<td align="left">Enterprise</td>
+</tr>
+<tr class="even">
+<td>47</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">48</td>
+<td align="right">149</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">5.9</td>
+<td align="right">26</td>
+<td align="left">Zoom</td>
+</tr>
+<tr class="odd">
+<td>69</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">70</td>
+<td align="right">138</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">6.8</td>
+<td align="right">26</td>
+<td align="left">Computer Accessories</td>
+</tr>
+<tr class="even">
+<td>74</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">76</td>
+<td align="right">134</td>
+<td align="right">24</td>
+<td align="right">4</td>
+<td align="right">6.5</td>
+<td align="right">20</td>
+<td align="left">Printing / Scanning</td>
+</tr>
+<tr class="odd">
+<td>35</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">35</td>
+<td align="right">126</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">9.0</td>
+<td align="right">26</td>
+<td align="left">M-Files</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">14</td>
+<td align="right">75</td>
+<td align="right">23</td>
+<td align="right">4</td>
+<td align="right">5.8</td>
+<td align="right">19</td>
+<td align="left">Creative Cloud</td>
+</tr>
+<tr class="odd">
+<td>83</td>
+<td align="right">2</td>
+<td align="right">8</td>
+<td align="right">85</td>
+<td align="right">70</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">7.4</td>
+<td align="right">26</td>
+<td align="left">Security - Other</td>
+</tr>
+<tr class="even">
+<td>73</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">74</td>
+<td align="right">67</td>
+<td align="right">24</td>
+<td align="right">4</td>
+<td align="right">6.6</td>
+<td align="right">20</td>
+<td align="left">Functional Issues</td>
+</tr>
+</tbody>
+</table>
+<p>When we look at Service Requests, we find that the top five:</p>
+<ul>
+<li>Have 300 or more tickets</li>
+<li>Constitute 42% of all requests</li>
+<li>Have an average duration ranging from 5.6 to 9.2 days (under the SLA)</li>
+<li>Do not appear to be overly complex problems to solve</li>
+</ul>
+<p>Taken together, this provides a very good opportunity to reduce duration times and improve customer satisfaction. Service requests, because their SLA target is considerably more forgiving than incidents, have a much higher success rate - 85% of service requests are completed in 10 days or less.</p>
+<p>Let’s look a little closer at the top 5 generators of service request tickets.</p>
+<div id="top-service-request-number-1---setup-and-installs" class="section level3">
+<h3>Top Service Request Number 1 - Setup and Installs</h3>
+<pre><code>## [1] &quot;Setup and installs&quot;</code></pre>
+<p>Not surprisingly, with all of the coming and going of staff and interns, setup and install requests lead the service requiests. Because these are rarely incidents (generally they are planned some time in advance), we expect that they will be comfortably within the SLA target; however, we see that, on average, it is pushing the limit at over 9 days.</p>
+<p>We also see that essentially <em>ALL</em> of the requests (in fact all but 9) are priority 3, and that there are <strong>NO</strong> priority 4 or 5 service requests. It turns out that there are no priority 4 and 5 service requests of any kind. This implies that service requests have, in effect, no realy prioritization. This might be fine, the sheer volume of them (over 5,000 annualy) means that we need <em>some</em> mechanism to determine what to work on next. If something is truly critical / urgent, make it an incident. If it is truly a service request, they need to be grouped in some way that implies priortiy.</p>
+<pre><code>## Priority Breakdown for service request category 1: Setup and installs</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">16</td>
+<td align="right">4</td>
+<td align="right">10.0</td>
+<td align="right">12</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">12</td>
+<td align="right">4</td>
+<td align="right">5.7</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">534</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">9.3</td>
+<td align="right">29</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correlations</strong></p>
+<p>There are two strong correlations here - priority is driving both average duration and minimum duration (making them shorter). Neither of these makes much sense, as it implies that the lower the priority (remember, a higher the priority number, the lower the priority), the faster it gets done. This needs discussion - is it because there is effectively no priority here (that is, the 9 non-priority 3 requests are skewing the data)? Or is it because tickets are being taken at random from this massive pile of priority 3’s and being closed in a variety of ways? This is worth management time to figure out.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.0073132</td>
+<td align="right">-0.5555839</td>
+<td align="right">-0.9258201</td>
+<td align="right">-0.8383308</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td align="right">-0.0073132</td>
+<td align="right">1.0000000</td>
+<td align="right">0.8258184</td>
+<td align="right">-0.2089693</td>
+<td align="right">0.5012070</td>
+</tr>
+<tr class="odd">
+<td>MaxDur</td>
+<td align="right">-0.5555839</td>
+<td align="right">0.8258184</td>
+<td align="right">1.0000000</td>
+<td align="right">0.3662943</td>
+<td align="right">0.8954448</td>
+</tr>
+<tr class="even">
+<td>MinDur</td>
+<td align="right">-0.9258201</td>
+<td align="right">-0.2089693</td>
+<td align="right">0.3662943</td>
+<td align="right">1.0000000</td>
+<td align="right">0.6820197</td>
+</tr>
+<tr class="odd">
+<td>AvgDur</td>
+<td align="right">-0.8383308</td>
+<td align="right">0.5012070</td>
+<td align="right">0.8954448</td>
+<td align="right">0.6820197</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="top-service-request-number-2---mail-email" class="section level3">
+<h3>Top Service Request Number 2 - Mail (Email)</h3>
+<pre><code>## [1] &quot;Mail&quot;</code></pre>
+<p>The sheer magnitude of email usage makes it no surprise that this is high on th elist. Once again, however, we see that only 7 of 502 requests are <em>not</em> priority 3. As a result, we have data questions similar to those with Setup and Installs. Additionally, however, it is disturbing to see the few priority 1’s hav such long average duration times, <em>especially with</em> a 30-day cutoff. The good news is that priority 2’s and 3’s are well within the range of acceptable SLA times.</p>
+<pre><code>## Priority Breakdown for service request category 2: Mail</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">20</td>
+<td align="right">5</td>
+<td align="right">12.2</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">6.0</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">495</td>
+<td align="right">27</td>
+<td align="right">3</td>
+<td align="right">5.5</td>
+<td align="right">24</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correlations</strong></p>
+<p>We see again the strange behavior of minimum and average duration times going down as the priority number goes higher. In addition, we are seeing that, as the number of events (service requests) increases, so does the maximum duration. Taken together, this implies (as before) that the mass of priority 3’s really means there is, practically speaking, no prioritization, and as events pile up, some of those 3’s age for a long time.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.0086010</td>
+<td align="right">-0.6094139</td>
+<td align="right">-0.9449112</td>
+<td align="right">-0.9483714</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td align="right">-0.0086010</td>
+<td align="right">1.0000000</td>
+<td align="right">0.7488221</td>
+<td align="right">0.0969847</td>
+<td align="right">0.0930226</td>
+</tr>
+<tr class="odd">
+<td>MaxDur</td>
+<td align="right">-0.6094139</td>
+<td align="right">0.7488221</td>
+<td align="right">1.0000000</td>
+<td align="right">0.6174987</td>
+<td align="right">0.7221957</td>
+</tr>
+<tr class="even">
+<td>MinDur</td>
+<td align="right">-0.9449112</td>
+<td align="right">0.0969847</td>
+<td align="right">0.6174987</td>
+<td align="right">1.0000000</td>
+<td align="right">0.9016293</td>
+</tr>
+<tr class="odd">
+<td>AvgDur</td>
+<td align="right">-0.9483714</td>
+<td align="right">0.0930226</td>
+<td align="right">0.7221957</td>
+<td align="right">0.9016293</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="top-service-request-number-3---access-and-login" class="section level3">
+<h3>Top Service Request Number 3 - Access and Login</h3>
+<pre><code>## [1] &quot;Access or Login&quot;</code></pre>
+<p>As in the case of the others, nearly all events are bunched around Priority 3, again suggesting that this is a general oddbins category for any request unless something in the definitively sets it apart. Average durations are respectable (under 6 days in each case), and all the priority 1’s are within the SLA. This is what we want to see.</p>
+<pre><code>## Priority Breakdown for service request category 3: Access or Login</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">7</td>
+<td align="right">10</td>
+<td align="right">3</td>
+<td align="right">5.3</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">11</td>
+<td align="right">16</td>
+<td align="right">4</td>
+<td align="right">5.5</td>
+<td align="right">12</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">410</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">5.9</td>
+<td align="right">29</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correlations</strong></p>
+<p>We see, as before, lower priorities (3’s, presumably) driving minimum and average durations down and events driving maximum durations up. Again, the latter makes sense, and the former does not. To be fair however, the high percentage of events that are priority 3 make it virtually impossible to see any true correlations clearly.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.0217900</td>
+<td align="right">-0.4539899</td>
+<td align="right">-0.8703883</td>
+<td align="right">-0.8328230</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td align="right">-0.0217900</td>
+<td align="right">1.0000000</td>
+<td align="right">0.8521130</td>
+<td align="right">-0.1591607</td>
+<td align="right">0.4901236</td>
+</tr>
+<tr class="odd">
+<td>MaxDur</td>
+<td align="right">-0.4539899</td>
+<td align="right">0.8521130</td>
+<td align="right">1.0000000</td>
+<td align="right">0.3775854</td>
+<td align="right">0.8542977</td>
+</tr>
+<tr class="even">
+<td>MinDur</td>
+<td align="right">-0.8703883</td>
+<td align="right">-0.1591607</td>
+<td align="right">0.3775854</td>
+<td align="right">1.0000000</td>
+<td align="right">0.7690025</td>
+</tr>
+<tr class="odd">
+<td>AvgDur</td>
+<td align="right">-0.8328230</td>
+<td align="right">0.4901236</td>
+<td align="right">0.8542977</td>
+<td align="right">0.7690025</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="top-service-request-number-4---ga-and-other" class="section level3">
+<h3>Top Service Request Number 4 - GA and Other</h3>
+<pre><code>## [1] &quot;GA and Other&quot;</code></pre>
+<p>This is a difficult category to deal with, as it contains administrative tasks, notes to users, requests for not otherwise classifiable services, and miscellaneous email. Once again, nearly all requests are priority 3s, and between the variations within the category and the single prioritization, this does not tell us much.</p>
+<pre><code>## Priority Breakdown for service request category 4: GA and Other</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">22</td>
+<td align="right">5</td>
+<td align="right">13.4</td>
+<td align="right">17</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">360</td>
+<td align="right">30</td>
+<td align="right">1</td>
+<td align="right">6.6</td>
+<td align="right">29</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correlations</strong></p>
+<p>We conce again have the odd coincidence of lower priority items driving the average and minimum durations down. And as before, we see increasing numbers of events driving the maximum duration time up. And as before, the latter makes sense but the former does not - and no doubt the same reasons apply: too many priority 3’s to be able to distinguish what is driving what.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.0088813</td>
+<td align="right">-0.3412618</td>
+<td align="right">-0.8764598</td>
+<td align="right">-0.6079153</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td align="right">-0.0088813</td>
+<td align="right">1.0000000</td>
+<td align="right">0.7641768</td>
+<td align="right">-0.2268697</td>
+<td align="right">0.1932564</td>
+</tr>
+<tr class="odd">
+<td>MaxDur</td>
+<td align="right">-0.3412618</td>
+<td align="right">0.7641768</td>
+<td align="right">1.0000000</td>
+<td align="right">0.3374487</td>
+<td align="right">0.7755450</td>
+</tr>
+<tr class="even">
+<td>MinDur</td>
+<td align="right">-0.8764598</td>
+<td align="right">-0.2268697</td>
+<td align="right">0.3374487</td>
+<td align="right">1.0000000</td>
+<td align="right">0.7967302</td>
+</tr>
+<tr class="odd">
+<td>AvgDur</td>
+<td align="right">-0.6079153</td>
+<td align="right">0.1932564</td>
+<td align="right">0.7755450</td>
+<td align="right">0.7967302</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="top-service-request-number-5---move-close-remove" class="section level3">
+<h3>Top Service Request Number 5 - Move / Close / Remove</h3>
+<pre><code>## [1] &quot;Move / Close / Remove&quot;</code></pre>
+<p>Like setups and installs, these events are fairly common, and for the same reason: staff and interns come and go; old equipment is turned in and new equipment issued and so forth.</p>
+<p>The bunching at priority 3 is extreme once again, and so once again we lose our ability to see clearly what is actually happening. This is compounded by the two priority 2’s sitting out there with an average duration of 29.0 days - suggesting late recordkeeping.</p>
+<pre><code>## Priority Breakdown for service request category 5: Move / Close / Remove</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+<th align="right">MMSpread</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">29</td>
+<td align="right">29</td>
+<td align="right">29.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">320</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="right">8.6</td>
+<td align="right">26</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Correlations</strong></p>
+<p>For what value the correlations may provide, we see higher numbers of events increasing the maximum duration times (this is logical), and the three duration values (average, min, and max) traveling together; that is, they appear to go up together. In the absence of any better data, this seems normal.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Priority</th>
+<th align="right">Events</th>
+<th align="right">MaxDur</th>
+<th align="right">MinDur</th>
+<th align="right">AvgDur</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Priority</td>
+<td align="right">1.0000000</td>
+<td align="right">-0.0044297</td>
+<td align="right">-0.3770019</td>
+<td align="right">-0.4779867</td>
+<td align="right">-0.4838160</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td align="right">-0.0044297</td>
+<td align="right">1.0000000</td>
+<td align="right">0.6310173</td>
+<td align="right">-0.1499599</td>
+<td align="right">0.0183386</td>
+</tr>
+<tr class="odd">
+<td>MaxDur</td>
+<td align="right">-0.3770019</td>
+<td align="right">0.6310173</td>
+<td align="right">1.0000000</td>
+<td align="right">0.6723676</td>
+<td align="right">0.7872092</td>
+</tr>
+<tr class="even">
+<td>MinDur</td>
+<td align="right">-0.4779867</td>
+<td align="right">-0.1499599</td>
+<td align="right">0.6723676</td>
+<td align="right">1.0000000</td>
+<td align="right">0.9857757</td>
+</tr>
+<tr class="odd">
+<td>AvgDur</td>
+<td align="right">-0.4838160</td>
+<td align="right">0.0183386</td>
+<td align="right">0.7872092</td>
+<td align="right">0.9857757</td>
+<td align="right">1.0000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="events-and-owners" class="section level1">
+<h1>Events and Owners</h1>
+<p>Just as no two event categories are the same - each has unique characteristics, levels of complexity, requirements to address, etc., so staff members have unique characteristics in terms of ability, experience, speed with which they can address a given problem, and so forth. This section looks at service desk staff and sees how they are performing relative to:</p>
+<ul>
+<li>The sheer numbers of incidents and service requests</li>
+<li>How long it takes them on average to address an event</li>
+<li>The standard deviation of those durations</li>
+</ul>
+<p>The standard deviation is included because it is a proxy for how long it takes a given person to get a given set of tickets closed. In this context, it describes the spread in days to address the first 68% of the events handled. It is useful to compare average duration and standard deviation when considering a given person’s performance. We want <em>both</em> to be low - not only the average time it takes to address an issue, but also, the number of days it takes to address a given set of issues.</p>
+<p>Using the 68-95-99 rule of standard deviations, a normally distributed data set will have 68% of the data points within the first standard deviation, 95% within two deviations, and 99% within three. In our context, we are talking days of duration. For example, if a staff member typically addresses a given set of service requests in 3.5 days, with a standard deviation of 2 days, this person would likely complete 95% of his or her service requests within 2 standard deviations (4 days), and 99% of them in 6 days. We would like this if we were talking service requests, as all the work would be completed within the SLA target. We would feel less good about it if we were talking incidents.</p>
+<p>In like manner, a poorer performer might have an average duration of 3.5 days, but have a standard deviation of 5 days, meaning that it takes 15 days to close a given set of tickets. This is well outside of all service level targets.</p>
+<div id="incidents-1" class="section level2">
+<h2>Incidents</h2>
+<p>We look first at how well the staff was able to handle the ~1450 incidents over the year. In the plots below:</p>
+<ul>
+<li>The first compares owners to the number of incidents handled. More incidents handled is, all things being equal, better.</li>
+<li>The second looks at the average duration time to handle an incident. In this case, we are looking for the lowest possible duration.</li>
+<li>The last shows the standard deviation. As in the case of average duration, a lower value is an indicator of better performance (fewer days needed to complete a body of work).</li>
+</ul>
+<p>We see a tiering effect here - two staffers are handling very high numbers of incidents, a second tier group of four handling over 100 incidents, and a final tier of five where very few incidents are handled. To be fair, this is not enough inormation to make a judgment, as we do not know, for example, if some of these lower numbers are because the staff member was actually fully engaged with service requests.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20-%20Incidents%20Owners%20vs.%20Number-1.png" width="672" /></p>
+<p>We are pleased to see that we have a couple of potential superstars on the team, but the next question would be, how quickly do they handle all of those? And what about those who handle fewer? Are they able to handle them faster because they have fewer?</p>
+<p>Looking at average duration times we see that the two staffers handling the larger numbers of incidents are also very competitive when it comes to duration times. The same is not true of the first staffer, who handled relatively few incidents and also tends to take a good deal longer to close an incident. We have already learned through interviews, however, that this is a case where recordkeeping is batched; therefore we cannot accurately reflect the time is actually took to close on those tickets.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20-%20Incidents%20Owners%20vs.%20Avg%20Duration-1.png" width="672" /></p>
+<p>When we look standard deviations, we see that the two staffers handling the most incidents are also very competitive relative to the total time needed to handle a given set of them. We also see one staff member with a standard deviation of 1.9, which implies that in that one case, 68% of the tickets would be addressed within the SLA target.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20-%20Incidents%20Owners%20vs.%20SD-1.png" width="672" /></p>
+<p>We can think of the standard deviation as a kind of efficiency metric, and we see a kind of efficiency tiering here. Five staff have standard deviations of under 3; four more are in the range of 3-6, and 2 are above that. In this case too, there may be <em>very</em> good reasons for this - a person might be generally assigned to longer-term projects or particularly knotty problems.</p>
+</div>
+<div id="service-requests-1" class="section level2">
+<h2>Service Requests</h2>
+<p>When we look at service requests we see a different set of dynamics for numbers of tickets addressed. One staff member is handling 39% of the requests, and the rest of the team about one-tenth that number on average. As noted before, there may be very good reasons for this, but we also remember that this same staff member was handling many incident tickets as well.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Set%20up%20Dataframe%20for%20SR%20Owner%20Plots-1.png" width="672" /></p>
+<p>When we look at average duration, we see more of a two-tier structure. One group tends to get tickets resolved in 5-10 days (within SLA limits), and a second group (two members) does not.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20-%20SR%20Owners%20Volume%20of%20Tickets-1.png" width="672" /></p>
+<p>In terms of standard deviation - a kind of speed metric (how long does it take me to do <em>all</em> my work?), we see five staffers who can get 95% percent of their tickets done within the SLA target (that is, they have a standard deviation of 5 or less). The others would complete at least 68% of their tickets within the SLA target, but no one is performing at a level where all of their work would be within the SLA range.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Plot%20-%20SR%20Owners%20vs.%20SD-1.png" width="672" /></p>
+<p>So who is the best performer overall? Of course, it depends on what you are measuring. For example, if we chose 3 metrics defiined this way:</p>
+<ul>
+<li>Volume: the overall number of incidents handled</li>
+<li>Efficiency: how quickly an incident was handled (on average)</li>
+<li>Speed: the number of days it takes to handle a set of requests</li>
+</ul>
+<p>We might see a ranking like this, giving a 1 for every first place, a 2 for every second place, and so on:</p>
+<pre><code>##           X Inc X.1   X.2   X.3  X.4 SerReq X.5   X.6   X.7  X.8 Both  X.9
+## 1  Owner_ID Vol Eff Speed Total Rank    Vol Eff Speed Total Rank Comb Rank
+## 2         3  11  11    11    33   11     11  11     6    28   10   21   10
+## 3         5   9  10    10    29   10     10  10    11    31   11   21   10
+## 4         6   7   2     2    11    2      4   1     1     6    1    3    1
+## 5        11   8   8     6    22    8      8   7    10    25    8   16    8
+## 6        12   6   5     5    16    5      3   3     5    11    3    8    5
+## 7        13   3   6     8    17    7      2   6     7    15    5   12    6
+## 8        14   1   1     4     6    1      5   5     7    17    6    7    4
+## 9        17   5   9     9    23    9      7   8     4    19    7   16    8
+## 10       22   2   7     7    16    5      1   2     3     6    1    6    2
+## 11       24  10   3     1    14    4      9   9     9    27    9   13    7
+## 12       28   4   4     3    11    2      6   4     2    12    4    6    2</code></pre>
+<p>Any such ranking has to be devised by management - to choose those criteria that are the most important. The above is only for illustrative purposes, but it may prove to be directionally useful.</p>
+
+</div>
+</div>
+<div id="building-a-predictive-model" class="section level1">
+<h1>Building a Predictive Model</h1>
+<p>It is clear from the analysis so far that there is room for improvement in the performance of the service desk staff. The average durations are over the SLA target for incidents and, while under the SLA for service requests - are not particularly encouraging given the number that are over that target.</p>
+<p>We also learned that just using simple averages would give us a basic predictive model should the service desk wish to provide clients with a estimate to set expectations. Given the wide range of standard deviations, however, this estimate could be misleading if not tied to a specific staff member.</p>
+<p>The simplest of all models would be to just take one grand average, but we have already seen that we can do better than that. The question is whether or not we can do significantly better than that.</p>
+<p>At the outset, we have to keep in mid that predictive models seek to weed out the noise in a data set - outliers and oddballs of various kinds. By limiting the duration ceiling to 30 days, <em>we have effectively removed much of this noise already</em>. Therefore we look at model building as a means to verify that this step was a good one, rather than as a means to dramatically improve our ability to estimate durations.</p>
+<p>The removal of events with a duration greater than 30 days has improved our estimates by shortening the range of durations and thereby lowering the average. Therefore we expect that a technique such as regularization will not help much. However, we may see some benefit from accounting for category- or owner-specific effects.</p>
+<p>This section has two parts. In part one, we make the most use we can of averages by category and owner to provide service desk staff with a reasonable estimate of duration times for a given type of problem handled by a given person. In part two, we see if we can improve on those averages.</p>
+<div id="using-averages-to-set-expectations" class="section level2">
+<h2>Using Averages to Set Expectations</h2>
+<p>When responding initially to the call, the initial response could be simple: just say “6-7 days on average” as the current average duration for all events - incidents or service requests - are so close (about 7 days if we round the number).</p>
+<p>Going one step further, we could just give the average duration for given category. Or, if we know if it is an incident vs. a service request, give the average for that category of that event type. We can go one step further than that, and map a given service desk staff member to a given category and quote the average duration for that person working on that kind of problem. That is about as far as we can go at this point - or at least, until we have better data to work with.</p>
+<p>If a category is not listed, the estimate is zero, as that category has historically been addressed immediately (zero days average duration). A crude model to be sure, but it has two advantages: first, it is simple and practical. Second, it provides a starting point for individuals to up their game and see how far they can drive down the duration times (min, average, and max) for a given category.</p>
+<p>Below is such a table mapping problem categories against the staff who have worked on them.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Category</th>
+<th align="right">11</th>
+<th align="right">12</th>
+<th align="right">13</th>
+<th align="right">14</th>
+<th align="right">17</th>
+<th align="right">22</th>
+<th align="right">24</th>
+<th align="right">28</th>
+<th align="right">3</th>
+<th align="right">5</th>
+<th align="right">6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Access or Login</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Acrobat Pro</td>
+<td align="right">NA</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Adobe Analytics</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Adobe CC</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Adobe Reader</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">BetterCloud</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Breaches and Phishing</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">10</td>
+<td align="right">NA</td>
+<td align="right">11</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Browsers - Other</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Calendar</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Caspio</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Cherwell</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Chrome</td>
+<td align="right">NA</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">13</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Computer Accessories</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Concord</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Creative Cloud</td>
+<td align="right">NA</td>
+<td align="right">12</td>
+<td align="right">NA</td>
+<td align="right">10</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Cyberduck</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Docs and Sheets</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Dropbox</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">3</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Enterprise</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Faxes</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">File Access</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">13</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Firefox</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Functional Issues</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">18</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">GA and Other</td>
+<td align="right">9</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Go-Global</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Google Apps - Other</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Greenshot</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Groups</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">IE / Edge</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">InCopy</td>
+<td align="right">8</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">InDesign</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">JSHOL</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">K4</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Kace</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Keychain</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Lastpass</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">LibreOffice</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Livelink</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">M-Files</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Mail</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Merlin</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Monitors</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">14</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Move / Close / Remove</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">MS Excel</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">12</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">MS Office Other</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">MS Powerpoint</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">MS Windows</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">MS Word</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">9</td>
+<td align="right">NA</td>
+<td align="right">9</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Network / Connectivity</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">13</td>
+<td align="right">8</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Outage or error</td>
+<td align="right">13</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Password</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">17</td>
+</tr>
+<tr class="even">
+<td align="left">Phones</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">17</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Printing / Scanning</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Pulse Secure</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Salesforce</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Security - Other</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">14</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">14</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">SentinelOne</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">11</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Setup and installs</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">7</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Skype</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">9</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Slack</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Teleconferencing</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">18</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Training</td>
+<td align="right">NA</td>
+<td align="right">13</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Updates / Upgrades</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Zoom</td>
+<td align="right">NA</td>
+<td align="right">11</td>
+<td align="right">6</td>
+<td align="right">5</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<p>We notice that there are many NAs, indicating that oftimes a given person does not handle a given category / problem type (and vice-versa). Nonetheless, in the absence of better recordkeeping and because some staff tend to handle certain kinds of problems, it is a reasonable-enough mechanism to predict likely resolution times.</p>
+</div>
+<div id="a-model-to-predict-duration-times-more-accurately" class="section level2">
+<h2>A model to Predict Duration Times More Accurately</h2>
+<p>In model building, we will focus on incidents for two reasons. First, management has expressed the desire to focus on improving team performance in that area first; second, the tendency for service requests to have no real prioritization (and therefore questionable statistics relative to average durations) makes it problematic to build such a model.</p>
+<p>To see if our model is useful, we will first establish a general baseline, and then use the RMSE (residual mean squared error, aka root mean squared error) as a measure of improvement.</p>
+<p>RMSE is the standard deviation of the residuals (the prediction errors). Residuals are a measure of how far from the regression line data points are - and how spread out these residuals are. In other words, it tells you how concentrated the data is around the line of best fit.</p>
+<p>We calculate RMSE as the square root of the average of the actual duration minus the predicted duration squared. In R terms, it is:</p>
+<p><strong>sqrt(mean((act_duration - pred_duration)^2))</strong></p>
+<p>RMSE is commonly used in forecasting and regression analysis to verify experimental results. In practical terms, it will tell us how far off the mark (the regression line) our data tends to be, and if we can get closer with some adjustments.</p>
+<p>To build the model, we divide the data into a training set and a test set. We will develop a model with the training set and then test it on the test set. this is done to avoid overfitting the model (for example, if we used the entire data set to develop the model and never tested it, we would not know if it gave good predictive results or not). In this instance, we will divide the dataset of all incidents randomly - in effect, taking a statistically useful sample to create the test set. The training set will have 80% of the incidents, the test set 20%.</p>
+<div id="step-1-establish-a-baseline---the-average-duration-for-all-incidents" class="section level3">
+<h3>Step 1: Establish a Baseline - the Average Duration for All Incidents</h3>
+<p>The simple average for all events is one place - and the easiest place - to start. It provides a benchmark for improvement. As noted elsewhere, the mere act of limiting duration times to 30 days <em>will significantly improve average duration times</em> and therefore the average will be better than would ordinarily be the case. When looking at the average and running it through our RMSE formula, we get our benchmark RMSE to see if we can do better.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">method</th>
+<th align="right">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Average (Mean) Duration</td>
+<td align="right">3.933</td>
+</tr>
+</tbody>
+</table>
+<p>So at the very least, we have a starting point - and RMSE for the basic, overall average from all incidents in the 30-day cutoff dataset.</p>
+</div>
+<div id="step-2---accounting-for-category-bias" class="section level3">
+<h3>Step 2 - Accounting for Category Bias</h3>
+<p>Next we introduce a factor we will call “beta c” or b_c, to account for general bias in category durations. We know that different categories are treated differently - some are more important that other ans presumably get faster attention. The term b_c represents the average duration for a given category c. The code looks like this:</p>
+<pre class="r"><code># Calculate b_c as the average of a given category&#39;s duration minus the overall average 
+mu &lt;- mean(train_set$Dur_Time)
+
+# Set up dataframe to capture the results
+category_avgs &lt;- data.frame(&quot;L3C&quot; = 1:num_L3,
+                            &quot;b_c&quot; = 1:num_L3)
+
+counter &lt;- 1
+for(i in 1:num_L3) {
+     x &lt;- train_set %&gt;% filter(L3C == i)
+     if(nrow(x) != 0) {
+          category_avgs[counter,1] &lt;- i
+          category_avgs[counter,2] &lt;- mean(x$Dur_Time - mu)
+          counter &lt;- counter + 1
+     }
+     else {
+          category_avgs[counter,1] &lt;- i
+          category_avgs[counter,2] &lt;- 0
+          counter &lt;- counter + 1
+     }
+}</code></pre>
+<p>The result is a list with 89 rows, one for each category, and the output looks like this:</p>
+<pre><code>##   L3C        b_c
+## 1   1 -0.4464752
+## 2   2  0.0000000
+## 3   3  0.0000000
+## 4   4 -1.1131419
+## 5   5  0.0000000
+## 6   6  0.0000000</code></pre>
+<p>We then join this list to our test set and calculate the new RMSE and see if it is better than our simple average. We use this code:</p>
+<pre class="r"><code># Generate predicted durations returned by the model
+predicted_durations &lt;- mu + test_set %&gt;% 
+     left_join(category_avgs, by = &#39;L3C&#39;) %&gt;%
+     pull(b_c)
+
+# Calculate the RMSE
+model_1_rmse &lt;- RMSE(predicted_durations, test_set$Dur_Time)
+
+# Add the results to the rmse_results summary
+rmse_results &lt;- bind_rows(rmse_results,
+                          data_frame(method=&quot;Category Effects Model&quot;,  
+                                     RMSE = model_1_rmse))
+
+# Display the result
+knitr::kable(rmse_results)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">method</th>
+<th align="right">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Average (Mean) Duration</td>
+<td align="right">3.93300</td>
+</tr>
+<tr class="even">
+<td align="left">Category Effects Model</td>
+<td align="right">4.12702</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the new RMSE value is not lower - the simple average is still better (lower RMSE value). Apparently there are no factors causing a given category type to be significantly more complext or difficult that would cause extraordinarily long duration times - perhaps our 30-day cutoff did the trick already?</p>
+</div>
+<div id="step-3---accounting-for-who-works-the-problem" class="section level3">
+<h3>Step 3 - Accounting for Who Works the Problem</h3>
+<p>Next, we will introduce a term we will call “beta o” or b_o, to account for owner-specific effects when handling categories of various kinds. As noted above, this is used to see if there are significantly different factors at work that would cause one person to consistently have <em>much</em> better durations than another. As we did with the category effects model, we calculate the b_o value for each of the staff members, join this to the category effects values which have already been joined to the test data. The code to do the calculation looks like this:</p>
+<pre class="r"><code># Generate predicted durations returned by the model
+predicted_durations &lt;- test_set %&gt;% 
+     left_join(category_avgs, by = &#39;L3C&#39;) %&gt;%
+     left_join(b_o_values, by = &#39;Owner_ID&#39;) %&gt;%
+     mutate(pred = mu + b_c + b_o_value) %&gt;%
+     pull(pred)</code></pre>
+<p>…and the resulting RMSE is shown below:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">method</th>
+<th align="right">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Average (Mean) Duration</td>
+<td align="right">3.93300</td>
+</tr>
+<tr class="even">
+<td align="left">Category Effects Model</td>
+<td align="right">4.12702</td>
+</tr>
+<tr class="odd">
+<td align="left">Owner Effects Model</td>
+<td align="right">4.12515</td>
+</tr>
+</tbody>
+</table>
+<p>We see that there is the slightest of improvements - certainly not enough to be significant and definitely not better than the average we have been using. This supports the theory that applying the 30-day cutoff for durations may have already removed most (or all) of whatever owner effects there might have been.</p>
+</div>
+<div id="step-4-regularization" class="section level3">
+<h3>Step 4: Regularization</h3>
+<p>We will now see if regularization can improve the model. Given what we have seen above, we do not expect it to. Regularization is used to remove the effects of say, a person joining the service desk for a week, handling a number of requests in record time, and then disappearing. Like a batter who hits .427 in the first two weeks of the season, it is not indicative of what the whole season would be like. Regularization compensates for this by applying a penalty for durations that are either way too high or way too low. It is likely, however, that the 30-day cutoff will already have cured this problem as well - or some of it.</p>
+<p>The process is to establish a value - call it lambda - experimentally and then apply it to the test set that has been joined together with the duration time factors for a given category. The code to do this looks like this - we will arrive at the optimal lambda value somewhere between 100 and 150:</p>
+<pre class="r"><code># Select a Lambda 
+lambdas &lt;- seq(100, 150, 1)
+
+# Join to the training set, calc new b_c and prediction
+rmses &lt;- sapply(lambdas, function(l){
+     predicted_durations &lt;- test_set %&gt;% 
+          left_join(sum_category_dur_time, by = &#39;L3C&#39;) %&gt;% 
+          mutate(b_c = scdt / (n_c + l)) %&gt;%
+          mutate(pred = mu + b_c) %&gt;%
+          pull(pred)
+     return(RMSE(predicted_durations, test_set$Dur_Time))
+})</code></pre>
+<p>Let’s see what this gives us.</p>
+<p><img src="2-CYO-project-markdown_files/figure-html/Select%20lambda%20and%20Apply%20for%20new%20RMSE-1.png" width="672" /></p>
+<pre><code>## [1] &quot;Optimal lambda value: 133&quot;</code></pre>
+<p>When we calculate the new RMSE, we see that the regularized model does a little better than either of the two above, but still does not beat the simple average.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">method</th>
+<th align="right">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Simple Average (Mean) Duration</td>
+<td align="right">3.933000</td>
+</tr>
+<tr class="even">
+<td align="left">Category Effects Model</td>
+<td align="right">4.127020</td>
+</tr>
+<tr class="odd">
+<td align="left">Owner Effects Model</td>
+<td align="right">4.125150</td>
+</tr>
+<tr class="even">
+<td align="left">Regularized Category Effects Model</td>
+<td align="right">4.109211</td>
+</tr>
+</tbody>
+</table>
+<p>In the end, our 30-day cutoff apparently had the most leverage in improving average duration times - it effectively blunt-forced a user effects model <strong>and</strong> regularization simultaneously. They key management takeaway is <em>get rid of the outliers - anything above 30 days</em>.</p>
+</div>
+</div>
+</div>
+<div id="conclusions" class="section level1">
+<h1>Conclusions</h1>
+<ul>
+<li><p>One of the original goals of this analysis was to discover if there was a means to do breach forecasting (determine if a given ticket would exceed the SLA targets). Given that 1439 of the 1451 incidents (99.2%) exceeded SLA targets, it is actually safe to assume that <em>EVERY</em> ticket will cause a breach. The problem is not with forecasting, it is with getting duration times down. It is not nearly so bad with service requests, with only 780 of 5209 (15%) exceeding the SLA. Of course, both of these figures assume a 30-day cutoff on durations.</p></li>
+<li><p>The number of very high duration tickets is troublesome. If it is bad recordkeeping, that can be fixed. If we are mis-classifying tickets (for example, using them from everything from major projects to a note to call someone back), then they should not be entered into Cherwell. For example, updating 450 desktops to a new virus software package is <em>not</em> a ticket, it is a project. We would expect projects to take weeks or months to finish.</p></li>
+<li><p>The service desk staff are likely unaware of their performance, or we would not see so many very high durations with no reasonable explanation. There is a lot of data in this report that management can use to convey the key problems of prioritization and recordkeeping consistency. The manager could hold one or more sessions to talk over the findings and create some action steps to resolve.</p></li>
+<li><p>On the flip side, the staff may have useful insights as to why some of the odd correlations are occurring (for example, when more events cause maximum duration times to increase but minimum duration times to decrease). One suspects there will be some useful information gained from that discussion.</p></li>
+</ul>
+</div>
+<div id="recommendations" class="section level1">
+<h1>Recommendations</h1>
+<ul>
+<li><p>One piece of feedback TSG has received from the organization is that they need to be faster in responding to problems and requests. The analysis has uncovered a number of opportunities (all relatively straightforward and easy) to improve duration times and thereby gain a significant jump in speed.</p></li>
+<li>In this vein, management needs to decide what are the most important metrics; there are many to choose from - for example:
+<ul>
+<li>Average duration</li>
+<li>Average or maximum duration for priority 1’s</li>
+<li>Ability to meet SLA targets</li>
+<li>Number of tickets addressed in a given timeframe</li>
+<li>…and so forth</li>
+</ul></li>
+<li><p>Once the staff understand the metrics they are going to be measured on, they will respond accordingly - and this implies some management mechanism be in place to show them how they are doing (individually and collectively)</p></li>
+<li>This analysis will remain somewhat flawed until the service desk team dedicates itself to disciplined recordkeeping. This has the following parts:
+<ul>
+<li>Adopting a taxonomy that categorizes problems with greater gradularity. This will enable the team to identify what problem areas are requiring the most staff time and effort to resolve. This should be built into Cherwell and be a required entry when a ticket is created.</li>
+<li>Adopting a method for assigning priorities. The 5-level prioritization does not seem to be working. Behavior suggests that there should be perhaps no more than 3:
+<ul>
+<li>Immediately or same day</li>
+<li>Within 2 days (incidents) or 5 days (service requests)</li>
+<li>Best effort depending on other priorities and workload</li>
+</ul></li>
+<li>Assuming a reasonable and accurate method of assigning priorities, discipline in addressing them - that is, all Incident 1’s are addressed before 2’s, and so forth</li>
+<li>Providing accurate descriptions of the problem for every ticket. In many instances, the description field has just a few words or something meaningless to anyone who did not enter the ticket.</li>
+<li>Closing tickets in Cherwell the day they are completed - no more batching of recordkeeping, as it is not possible to generate accurate statistics when some staff are batching their updates.</li>
+<li>Management of the backlog via a daily or weekly aging report so that no high priority ticket gets forgotten, and thereby drives up the average duration times.</li>
+</ul></li>
+<li><p>Based on the aging report, select 1 or 2 tickets per week on which to conduct a post mortem to determine what when right and what when wrong. Make adjustments in communication, the data, or the process accordingly.</p></li>
+</ul>
+</div>
+<div id="next-steps" class="section level1">
+<h1>Next Steps</h1>
+<p>the next steps, which can be taken immediately, are:</p>
+<ul>
+<li><p>Create a taxonomy that is optimally useful for managing work and priorities. It does not have to be the one in this analysis, but it needs to be granular enough to track improvements in key problem areas.</p></li>
+<li><p>Revise the prioritization scheme so it works and drives faster performance</p></li>
+<li><p>Build the revised taxonomy and prioritization scheme into Cherwell, so someone entering a ticket <em>must</em> enter that information</p></li>
+<li><p>Begin classifying tickets under the new rules immediately. The sooner we can gather a year’s worth of data (or even 3 to 6 months worth) the sooner we will know if improved processes and practices are paying off.</p></li>
+<li><p>Once we have a critical mass of new data, update the code as needed and re-run everything to see where there have been areas of improvement. Updating code and the attendant tasks should not take more than a few days.</p></li>
+</ul>
+</div>
+<div id="appendices" class="section level1">
+<h1>Appendices</h1>
+<div id="prototype-aging-report" class="section level2">
+<h2>Prototype Aging Report</h2>
+<p>Below we offer the management team a suggested format for a weekly aging report for tracking tickets that are exceeding SLA boundaries. This is easily created from a simple Cherwell extract.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">ID</th>
+<th align="right">Age</th>
+<th align="left">Team</th>
+<th align="left">Created</th>
+<th align="left">Customer</th>
+<th align="left">Status</th>
+<th align="left">Owned.By</th>
+<th align="left">SLA.Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">30001</td>
+<td align="right">61</td>
+<td align="left">B&amp;MPS</td>
+<td align="left">1/4/2019</td>
+<td align="left"><name removed></td>
+<td align="left">In Progress</td>
+<td align="left"><name removed></td>
+<td align="left">1/8/2019</td>
+</tr>
+<tr class="even">
+<td align="right">29950</td>
+<td align="right">62</td>
+<td align="left">Business Applications Support</td>
+<td align="left">1/2/2019</td>
+<td align="left"><name removed></td>
+<td align="left">Assigned</td>
+<td align="left"><name removed></td>
+<td align="left">1/4/2019</td>
+</tr>
+<tr class="odd">
+<td align="right">30711</td>
+<td align="right">29</td>
+<td align="left">Business Applications Support</td>
+<td align="left">2/5/2019</td>
+<td align="left"><name removed></td>
+<td align="left">New</td>
+<td align="left"><name removed></td>
+<td align="left">2/7/2019</td>
+</tr>
+<tr class="even">
+<td align="right">31145</td>
+<td align="right">8</td>
+<td align="left">Business Applications Support</td>
+<td align="left">2/25/2019</td>
+<td align="left"><name removed></td>
+<td align="left">In Progress</td>
+<td align="left"><name removed></td>
+<td align="left">3/4/2019</td>
+</tr>
+<tr class="odd">
+<td align="right">22996</td>
+<td align="right">357</td>
+<td align="left">Developers</td>
+<td align="left">3/14/2018</td>
+<td align="left"><name removed></td>
+<td align="left">Assigned</td>
+<td align="left"><name removed></td>
+<td align="left">3/16/2018</td>
+</tr>
+<tr class="even">
+<td align="right">25992</td>
+<td align="right">237</td>
+<td align="left">Developers</td>
+<td align="left">7/11/2018</td>
+<td align="left"><name removed></td>
+<td align="left">Assigned</td>
+<td align="left"><name removed></td>
+<td align="left">7/13/2018</td>
+</tr>
+<tr class="odd">
+<td align="right">26587</td>
+<td align="right">212</td>
+<td align="left">Developers</td>
+<td align="left">8/6/2018</td>
+<td align="left"><name removed></td>
+<td align="left">Assigned</td>
+<td align="left"><name removed></td>
+<td align="left">8/6/2018</td>
+</tr>
+<tr class="even">
+<td align="right">29282</td>
+<td align="right">98</td>
+<td align="left">Developers</td>
+<td align="left">11/27/2018</td>
+<td align="left"><name removed></td>
+<td align="left">In Progress</td>
+<td align="left"><name removed></td>
+<td align="left">11/30/2018</td>
+</tr>
+<tr class="odd">
+<td align="right">31331</td>
+<td align="right">1</td>
+<td align="left">Hardware</td>
+<td align="left">3/5/2019</td>
+<td align="left"><name removed></td>
+<td align="left">Assigned</td>
+<td align="left"><name removed></td>
+<td align="left">3/18/2019</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="output-of-the-predictive-model-with-no-30-day-cutoff" class="section level2">
+<h2>Output of the Predictive Model with No 30-Day Cutoff</h2>
+<p>One question that is natural to ask is what would have happened to the predictive model if we had not enforced a cutoff at 30 days? When we run the model under these circumstances, we would have made a lambda selection - by trial and error - between -1.0 and +1.0, with the optimal lambda being negative 0.5.</p>
+<div class="figure">
+<img src="Rplot-lambda-curve.png" alt="Alt text" />
+<p class="caption">Alt text</p>
+</div>
+<p>This would have produced model results as follows:</p>
+<p>method RMSE<br />
+<chr> <dbl><br />
+1 Simple Average (Mean) Duration 22.7<br />
+2 Category Effects Model 21.7<br />
+3 Owner Effects Model 20.8<br />
+4 Regularized category Effects Model 21.7</p>
+<p>The owner effects model would have produced more accurate results and this is intuitively makes sense if we believe that our 30-day cutoff model effectively removed the owner bias from poor recordkeeping. Without this cutoff, the model has to reinstate it by penalizing those very high duration times.</p>
+<p>[End of Document]</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
