@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r Libraries, data files, and general setup, echo=FALSE, warning=FALSE}
+```{r Library and file setup, include=FALSE}
 #
 # Library setups
 #
